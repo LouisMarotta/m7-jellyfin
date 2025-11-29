@@ -1,0 +1,43 @@
+{
+  "name": "movian7-jellyfin",
+  "version": "1.0.1",
+  "description": "Stream your TV Shows and Movies from your <a href=\"https://jellyfin.org/\">Jellyfin</a> instance.",
+  "keywords": [
+    "swc",
+    "movian",
+    "jellyfin",
+    "javascript",
+    "eslint",
+    "prettier"
+  ],
+  "author": "Louis Biagio Marotta <loumb31@gmail.com>",
+  "license": "GPL-3.0-only",
+  "main": "jellyfin.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean",
+    "build": "swc src -d dist && node ./bin/build.js",
+    "dev": "npm run build && node ./bin/dev.js",
+    "lint": "eslint ./src"
+  },
+  "devDependencies": {
+    "@swc/cli": "^0.7.9",
+    "@swc/core": "^1.15.3",
+    "@swc-node/register": "^1.8.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "archiver": "^7.0.1"
+  },
+  "movian": {
+    "title": "Jellyfin",
+    "apiversion": 2,
+    "icon": "assets/logo.png",
+    "synopsis": "View your personal Jellyfin library",
+    "showtimeVersion": "5.0.462",
+    "type": "ecmascript",
+    "id": "jellyfin",
+    "category": "video",
+    "control": {}
+  }
+}

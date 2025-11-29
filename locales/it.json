@@ -1,0 +1,15 @@
+{
+  "setting.host": "Host",
+  "setting.username": "Nome utente",
+  "setting.password": "Password",
+  "setting.ps3_compatibility": "Compatibilità PS3",
+  "action.credits": "Visualizza crediti",
+  "action.update": "Aggiorna {{plugin_name}}",
+  "plugin.updating": "Aggiornando {{plugin_name}}, attendi...",
+  "plugin.loading": "Caricando...",
+  "plugin.search": "Cerca...",
+  "auth.missing_credentials.title": "Credenziali mancanti",
+  "auth.missing_credentials": "Vai nelle impostazioni e inserisci le tue credenziali {{provider_name}}",
+  "credits.kofi": "Supportami su Ko-fi",
+  "credits.github": "Dammi una stella su GitHub"
+}

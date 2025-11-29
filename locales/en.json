@@ -1,0 +1,15 @@
+{
+  "setting.host": "Host",
+  "setting.username": "Username",
+  "setting.password": "Password",
+  "setting.ps3_compatibility": "PS3 compatibility",
+  "action.credits": "View credits",
+  "action.update": "Update {{plugin_name}}",
+  "plugin.updating": "Updating {{plugin_name}}, please wait...",
+  "plugin.loading": "Loading...",
+  "plugin.search": "Search...",
+  "auth.missing_credentials.title": "Missing credentials",
+  "auth.missing_credentials": "Please go in the settings and fill out your {{provider_name}} credentials",
+  "credits.kofi": "Support me on Ko-fi",
+  "credits.github": "Star me on GitHub"
+}

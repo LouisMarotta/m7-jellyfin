@@ -1,0 +1,20 @@
+{
+  "module": {
+    "type": "commonjs",
+    "strictMode": false
+  },
+  "jsc": {
+    "minify": {
+      "compress": {
+        "unused": true
+      },
+      "mangle": true
+    },
+    "parser": {
+      "syntax": "ecmascript",
+      "tsx": false,
+      "decorators": false,
+      "dynamicImport": false
+    }
+  }
+}
