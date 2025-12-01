@@ -156,16 +156,21 @@ class View {
           var mediaItem = {
             title: item.Name,
             icon: item.Type === 'MusicAlbum'
-              ? this.api.getItemImage(item.Id, 'Primary', { fillHeight: 175, fillWidth: 175, quality: 100 })
-              : this.api.getItemImage(item.Id, 'Thumb')
+              ? this.api.getItemImage(item.Id, 'Primary', { fillHeight: 175, fillWidth: 175, quality: 100, format: 'Jpg' })
+              : this.api.getItemImage(item.Id, 'Thumb', { fillHeight: 177, fillWidth: 315, quality: 96, format: 'Jpg' }),
           };
+
+          let totalTicks = item.RunTimeTicks ?? 0;
+          if (totalTicks > 0) {
+            mediaItem.duration = utils.getTotalDuration(utils.ticksToDate(totalTicks));
+          }
 
           if (typeof item.ProductionYear !== 'undefined') {
             mediaItem.year = item.ProductionYear;
           }
 
           if (typeof item.CommunityRating !== 'undefined') {
-            mediaItem.rating = item.CommunityRating * 10;
+            mediaItem.rating = Math.round(item.CommunityRating * 10);
           }
 
           if (typeof item.Genres !== 'undefined') {
@@ -241,6 +246,11 @@ class View {
           quality: 90
         })
       };
+
+      let totalTicks = episode.RunTimeTicks ?? 0;
+      if (totalTicks > 0) {
+        mediaItem.duration = utils.getTotalDuration(utils.ticksToDate(totalTicks));
+      }
 
       if (typeof episode.IndexNumber !== 'undefined' && !isNaN(episode.IndexNumber)) {
         mediaItem.title = episode.IndexNumber + '. ' + mediaItem.title;
