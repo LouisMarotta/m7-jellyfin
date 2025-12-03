@@ -48,32 +48,24 @@ class Utils {
 
   }
 
-  // getTimeFromTicks: function(ticks) {
-  // let ticksToMicrotime = ticks / 10000;
-  // let epochMicrotimeDiff = Math.abs(new Date(0, 0, 1).setFullYear(1));
-  // let tickDate = new Date(ticksToMicrotime - epochMicrotimeDiff);
-
-  // let date = tickDate.getDate();
-  // let month = tickDate.getMonth()+1; //Be careful! January is 0 not 1
-  // let year = tickDate.getFullYear();
-  // let hours=tickDate.getHours();
-  // let minutes=tickDate.getMinutes();
-  // let seconds=tickDate.getSeconds();
-
-  //     return {
-  //     date:date,
-  //     month:month,
-  //     year:year,
-  //     hours:hours,
-  //     minutes:minutes,
-  //     seconds:seconds
-  //     }
-  // }
-
-
   // TODO: Handle releasese from Ko-fi
   static getLatestPlugin() {
     return 'https://github.com/LouisMarotta/m7-jellyfin/releases/latest/download/jellyfin.zip';
+  }
+
+  ticksToDate(input = 0) {
+    var epochTicks = 621355968000000000;
+    var ticksPerMillisecond = 10000;
+    var jsTicks = (input - epochTicks) / ticksPerMillisecond;
+    return new Date(jsTicks);
+  }
+
+  getTotalDuration(date) {
+    let hours = date.getUTCHours();
+    let minutes = date.getUTCMinutes();
+    let seconds = date.getUTCSeconds();
+
+    return (hours * 3600) + (minutes * 60) + seconds;
   }
 }
 
