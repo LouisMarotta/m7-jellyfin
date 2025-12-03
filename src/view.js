@@ -153,43 +153,15 @@ class View {
         // popup.notify(JSON.stringify(data), 3);
         let items = data.Items ?? [];
         items.forEach((item) => {
-          var mediaItem = {
-            title: item.Name,
-            icon: item.Type === 'MusicAlbum'
-              ? this.api.getItemImage(item.Id, 'Primary', { fillHeight: 175, fillWidth: 175, quality: 100, format: 'Jpg' })
-              : this.api.getItemImage(item.Id, 'Thumb', { fillHeight: 177, fillWidth: 315, quality: 96, format: 'Jpg' }),
-          };
-
-          let totalTicks = item.RunTimeTicks ?? 0;
-          if (totalTicks > 0) {
-            mediaItem.duration = utils.getTotalDuration(utils.ticksToDate(totalTicks));
-          }
-
-          if (typeof item.ProductionYear !== 'undefined') {
-            mediaItem.year = item.ProductionYear;
-          }
-
-          if (typeof item.CommunityRating !== 'undefined') {
-            mediaItem.rating = Math.round(item.CommunityRating * 10);
-          }
-
-          if (typeof item.Genres !== 'undefined') {
-            mediaItem.genres = item.Genres.join(', ');
-          }
-
-          if (typeof item.Overview !== 'undefined') {
-            mediaItem.description = item.Overview;
-          }
-
-          var path = `${this.prefix}:video:${item.Id}`;
-          if (typeof mediaTypes[item.Type] !== 'undefined') {
-            path = mediaTypes[item.Type]['path'] + item.Id;
-          }
-          page.appendItem(path, 'video', mediaItem);
+          let mediaItem = this.api.parseItem(item);
+          let path = this.api.getPath(this.prefix, item.Id, item.Type);
+          let pageItem = page.appendItem(path, 'video', mediaItem);
         });
 
         offset += items.length;
-        hasMore = offset < data.TotalRecordCount;
+        let totalEntries = data.TotalRecordCount;
+        hasMore = offset < totalEntries;
+        page.entries = totalEntries;
         page.haveMore(hasMore);
         page.loading = false;
       }, 125);
@@ -238,31 +210,9 @@ class View {
     var episodes = response.Items ?? [];
 
     episodes.forEach((episode) => {
-      var mediaItem = {
-        title: episode.Name,
-        icon: this.api.getItemImage(episode.Id, 'Primary', {
-          fillWidth: 600,
-          fillHeight: 600,
-          quality: 90
-        })
-      };
-
-      let totalTicks = episode.RunTimeTicks ?? 0;
-      if (totalTicks > 0) {
-        mediaItem.duration = utils.getTotalDuration(utils.ticksToDate(totalTicks));
-      }
-
-      if (typeof episode.IndexNumber !== 'undefined' && !isNaN(episode.IndexNumber)) {
-        mediaItem.title = episode.IndexNumber + '. ' + mediaItem.title;
-        mediaItem.episode = parseInt(episode.IndexNumber);
-      }
-
-      if (typeof episode.Overview !== 'undefined') {
-        mediaItem.description = episode.Overview;
-      }
-
-      var path = this.prefix + ':video:' + episode.Id;
-      page.appendItem(path, 'video', mediaItem)
+      var mediaItem = this.api.parseItem(episode);
+      var path = this.api.getPath(this.prefix, episode.Id, episode.Type);
+      let pageItem = page.appendItem(path, 'video', mediaItem)
     });
 
     page.loading = false;

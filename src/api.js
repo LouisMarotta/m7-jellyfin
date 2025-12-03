@@ -5,7 +5,14 @@ const Utils = require('./utils');
 const utils = new Utils();
 
 class Api {
-
+  static mediaTypes = {
+    'Series': {
+      'path': ':series:'
+    },
+    'Movie': {
+      'path': ':video:'
+    }
+  };
   constructor(user = {}) {
     this.user = user;
   }
@@ -229,6 +236,84 @@ class Api {
     // DELETE TO SAME
   }
 
+  parseItem = function (item) {
+    var mediaItem = {
+      title: item.Name
+    };
+
+    let type = item.Type;
+    let icon = null;
+    switch (type) {
+      case 'Episode':
+        icon = this.getItemImage(item.Id, 'Primary', {
+          fillWidth: 600,
+          fillHeight: 600,
+          quality: 90
+        });
+        break;
+      case 'MusicAlbum':
+        icon = this.getItemImage(item.Id, 'Primary', {
+          fillHeight: 175,
+          fillWidth: 175,
+          quality: 100,
+          format: 'Jpg'
+        });
+        break;
+      case 'Movie':
+      default:
+        icon = this.getItemImage(item.Id, 'Thumb', {
+          fillHeight: 177,
+          fillWidth: 315,
+          quality: 96,
+          format: 'Jpg'
+        });
+        break;
+    }
+    if (icon) {
+      mediaItem.icon = icon;
+    }
+
+    if (['Series'].indexOf(item.Type) < 0) {
+      let totalTicks = item.RunTimeTicks ?? 0;
+      if (totalTicks > 0) {
+        mediaItem.duration = utils.getTotalDuration(utils.ticksToDate(totalTicks));
+      }
+    }
+
+    if (['Episode'].indexOf(item.Type)) {
+      if (typeof item.IndexNumber !== 'undefined' && !isNaN(item.IndexNumber)) {
+        mediaItem.title = item.IndexNumber + '. ' + mediaItem.title;
+        mediaItem.episode = parseInt(item.IndexNumber);
+      }
+    }
+
+    if (typeof item.ProductionYear !== 'undefined') {
+      mediaItem.year = item.ProductionYear;
+    }
+
+    if (typeof item.CommunityRating !== 'undefined') {
+      mediaItem.rating = Math.round(item.CommunityRating * 10);
+    }
+
+    if (typeof item.Genres !== 'undefined') {
+      mediaItem.genres = item.Genres.join(', ');
+    }
+
+    if (typeof item.Overview !== 'undefined') {
+      mediaItem.description = item.Overview;
+    }
+
+    return mediaItem;
+  }
+
+  getPath = function (prefix, id, type) {
+    var path = `${prefix}:video:${id}`;
+    if (typeof Api.mediaTypes[type] !== 'undefined') {
+      path = prefix + Api.mediaTypes[type]['path'] + id;
+    }
+
+    return path;
+  }
 }
 
 module.exports = Api;
