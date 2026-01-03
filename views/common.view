@@ -1,0 +1,520 @@
+#define ACTION_ROW(TITLE, ICON, EVENT, HIDDEN = false, FOCUSABLE = 0.8) {
+  widget(container_x, {
+    hidden: HIDDEN;
+
+  	focusable: FOCUSABLE;
+
+  	widget(container_z) {
+  		widget(quad, {
+  	    fhpSpill: true;
+  	    additive: true;
+  			height: 3em;
+        //color: $view.posterPrimaryColor;
+        color: "#212121";
+  	    alpha: 0.6 + 0.4 * iir(isNavFocused() + isPressed() + isHovered(), 4, true);
+  	  });
+
+  		widget(container_x, {
+  			padding: [0.5em, 0.5em];
+  			spacing: 0.2em;
+
+  		  widget(image, {
+  	    	margin: [0.1em, 0.1em];
+  				height: 3em;
+  	    	source: ICON;
+          color: "#0F0F0F";
+          alpha: 0.5 + 0.5 * (isHovered() + isNavFocused() + isPressed());
+          hidden: !(ICON);
+  	  	});
+
+  			widget(label, {
+  			  caption: TITLE;
+  				padding: [0.5em, 0];
+  	  		align: center;
+  			});
+  		});
+
+      widget(border, {
+        border: 0.1em;
+        color: "#FFFFFF";//iir(isNavFocused() + isHovered(), 4);
+        alpha: 0.8 * (isHovered() + isNavFocused() + isPressed());
+      });
+  	});
+
+  	onEvent(activate, EVENT);
+  });
+}
+
+#define CERTIFICATION(TEXT, HIDDEN) {
+  widget(container_z, {
+    hidden: HIDDEN;
+
+    widget(label, {
+  	  TextStyleItem();
+      caption: TEXT;
+      align: left;
+    	color: 0.75;
+    	sizeScale: 0.95;
+    });
+
+    widget(border, {
+      border: 0.1em;
+      alpha: 0.6;
+      margin: [-0.3em, 1.25em, -0.25em, 1.3em];
+    });
+  });
+}
+
+#define HEADING(TEXT, SIZE = 2, HIDDEN = false) {
+  widget(label, {
+    hidden: HIDDEN;
+    margin: [0, 0, 1.5em, 0];
+    caption: TEXT;
+    TextStyleItem();
+    sizeScale: SIZE;
+  });
+}
+
+#define LABEL(TITLE, TEXT) {
+  widget(container_x, {
+    hidden: !(TEXT && TEXT != "N/A");
+
+    widget(label, {
+  	  TextStyleItem();
+      caption: TITLE + " ";
+      align: left;
+    	color: 0.75;
+    	sizeScale: 1.2;
+    });
+
+    widget(label, {
+  	  TextStyleItem();
+      caption: TEXT;
+      align: left;
+      maxlines: 5;
+    	color: 1.0;
+    	sizeScale: 1.2;
+    });
+  });
+}
+
+#define LOGO(IMAGE, HEIGHT = 4.5em, HIDDEN = false) {
+  widget(container_z) {
+    height: HEIGHT;
+    hidden: HIDDEN;
+    width: 8.5em;
+    margin: [0, 0, 0.5em, 0];
+
+    widget(image, {
+      align: left;
+      margin: [0.5em, 0.5em];
+      source: IMAGE;
+    });
+  });
+}
+
+#define POSTER(IMAGE, HEIGHT = 19em) {
+  widget(container_z) {
+    height: HEIGHT;
+
+    widget(container_z, {
+      widget(throbber, {
+        alpha: 1.0;
+        hidden: !$clone.isLoading;
+      });
+
+      widget(image, {
+        $clone.isLoading = isLoading();
+        margin: [0.5em, 0.5em];
+        source: IMAGE;
+        $view.posterPrimaryColor = RGBToString(primaryColor() * 0.3);
+      });
+    });
+  });
+}
+
+#define STATUS(TEXT, HIDDEN) {
+  widget(container_z, {
+    hidden: HIDDEN;
+    margin: [1.25em, 0, 0, 0];
+
+    widget(label, {
+  	  TextStyleItem();
+      caption: TEXT;
+      align: left;
+    	color: 0.75;
+    	sizeScale: 0.95;
+    });
+
+    widget(border, {
+      border: 0.1em;
+      alpha: 0.6;
+      margin: [-0.3em, 1.25em, -0.25em, 1.3em];
+    });
+  });
+}
+
+#define TEXT(CONTENT, ALIGN) {
+  widget(container_x, {
+    widget(list_y, {
+      .id = "bodytext";
+
+      widget(label, {
+        TextStyleItem();
+        caption: CONTENT;
+        maxlines: 50;
+        align: ALIGN;
+        bold: false;
+        sizeScale: 1.2;
+      });
+    });
+
+    LIST_Y_SLIDER("bodytext", true);
+  });
+}
+
+#define TEXT_NO_SLIDER(CONTENT, ALIGN) {
+  widget(container_x, {
+      widget(label, {
+        TextStyleItem();
+        caption: CONTENT;
+        maxlines: 50;
+        align: ALIGN;
+        bold: false;
+        sizeScale: 1.2;
+      });
+  });
+}
+
+#define TITLE(TEXT, HIDDEN = false) {
+  HEADING(TEXT, 2, HIDDEN);
+}
+
+#define RATING(IMAGE_PATH, CONTENT) {
+  widget(container_y, {
+    hidden: !(IMAGE_PATH && CONTENT && CONTENT != "N/A%");
+    width: 3.9em;
+
+    IMAGE(IMAGE_PATH, 4em);
+
+    widget(container_y, {
+      padding: [1em, 0.3em, 0, 0];
+      TEXT(CONTENT, center);
+    });
+  });
+}
+
+#define EPISODE_ITEM(TITLE, SUBTITLE, IMAGE, WATCHED, EVENT) {
+  widget(container_z, {
+
+    focusable: true;
+    onEvent(activate, EVENT);
+
+    widget(quad, {
+      hidden: !$clone.primaryColor;
+      color: $clone.primaryColor;
+    });
+
+    widget(container_z, {
+      widget(throbber, {
+        alpha: 1.0;
+        hidden: !$clone.isLoading;
+      });
+
+      widget(image, {
+        $clone.isLoading = isLoading();
+        source: IMAGE;
+        $clone.primaryColor = RGBToString(primaryColor() * 0.3);
+        color: 0.8 + iir(isNavFocused() + isHovered() + isPressed(), 4) * 0.4;
+        aspectConstraint: true;
+      });
+    });
+
+    widget(container_y, {
+      hidden: !WATCHED;
+
+      widget(container_x, {
+        align: right;
+
+        widget(icon, {
+          source: "img/check.png";
+          width: 2.5em;
+          height: 2.5em;
+        });
+      });
+    });
+
+    widget(container_y, {
+      filterConstraintY: true;
+      align: bottom;
+      padding: [0, 1.1em, 0, 0];
+      widget(label, {
+        caption: TITLE;
+        padding: [0, 0.15em];
+        align: bottom;
+        autohide: true;
+        bgalpha: 0.8;
+      });
+    });
+
+    widget(container_y, {
+      filterConstraintY: true;
+      align: bottom;
+      hidden: !SUBTITLE;
+      widget(label, {
+        caption: SUBTITLE;
+        padding: [0, 0.15em];
+        align: bottom;
+        autohide: true;
+        bgalpha: 0.7;
+        sizeScale: 0.8;
+      });
+    });
+
+    widget(border, {
+      border: 0.1em;
+      color: iir(isNavFocused() + isHovered() + isPressed(), 4);
+      alpha: 0.8;
+    });
+
+  });
+}
+
+#define IMAGE_ITEM(TITLE, SUBTITLE, IMAGE, EVENT, HIDDEN = false, FOCUSABLE = 1.0) {
+  widget(container_z, {
+    hidden: HIDDEN;
+
+    focusable: FOCUSABLE;
+    onEvent(activate, EVENT);
+
+    widget(quad, {
+      hidden: !$clone.primaryColor;
+      color: $clone.primaryColor;
+    });
+
+    widget(container_z, {
+      widget(throbber, {
+        alpha: 1.0;
+        hidden: !$clone.isLoading;
+      });
+
+      widget(image, {
+        source: IMAGE;
+        $clone.isLoading = isLoading();
+        $clone.primaryColor = RGBToString(primaryColor() * 0.3);
+        color: 0.8 + iir(isNavFocused() + isHovered() + isPressed(), 4) * 0.4;
+        height: 9.9em;
+        aspectConstraint: true;
+      });
+    });
+
+    widget(container_y, {
+      filterConstraintY: true;
+      align: bottom;
+      padding: [0, 1.1em, 0, 0];
+      widget(label, {
+        caption: TITLE;
+        padding: [0, 0.15em];
+        align: bottom;
+        autohide: true;
+        bgalpha: 0.8;
+      });
+    });
+
+    widget(container_y, {
+      filterConstraintY: true;
+      align: bottom;
+      hidden: !SUBTITLE;
+      widget(label, {
+        caption: SUBTITLE;
+        padding: [0, 0.15em];
+        align: bottom;
+        autohide: true;
+        bgalpha: 0.7;
+        sizeScale: 0.8;
+      });
+    });
+
+    widget(border, {
+      border: 0.1em;
+      color: iir(isNavFocused() + isHovered() + isPressed(), 4);
+      alpha: 0.8;
+    });
+
+  });
+}
+
+#define IMAGE(PATH, HEIGHT, HIDDEN = false) {
+  widget(image, {
+    hidden: HIDDEN;
+    height: HEIGHT;
+    $clone.ready = 1 - $view.loading();
+    source: PATH;
+    color: 0.75;
+    saturation: 1 - iir($clone.ready, 10);
+  });
+
+  /*widget(fader, {
+    filterConstraintY: true;
+    width: WIDTH;
+    plane: [0,1,0,1];
+    alphaFallOff: 1;
+    blurFallOff: 0.2;
+    widget(mirror, {
+      alpha: 0.6;
+      widget(stencil, {
+        source: "skin://graphics/stencil.png";
+        widget(image, {
+          $clone.ready = 1 - $view.loading();
+          source: IMAGE;
+          color: 0.75;
+          saturation: 1 - iir($clone.ready, 10);
+        });
+
+        widget(container_y, {
+          space(1);
+          widget(throbber, {
+            alpha: iir(!$clone.ready, 8);
+          });
+          space(1);
+        });
+      });
+    });
+  });*/
+}
+
+#define textInput(PROPERTY, EVENT) {
+  widget(backdrop, {
+    .source = "skin://graphics/border-tiny.png";
+    .borderOnly = true;
+    .border = 4;
+    .color = 0.5;
+    BODY;
+  });
+}
+
+#define popupInputField(BODY) {
+  widget(backdrop, {
+    .source = "skin://graphics/border-tiny.png";
+    .borderOnly = true;
+    .border = 4;
+    .color = 0.5;
+    BODY;
+  });
+}
+
+#define popupButtonOK(EVENT, ENABLED, HIDDEN) {
+
+  widget(backdrop, {
+    source: "skin://graphics/border-tiny.png";
+    borderOnly: true;
+    border: 4;
+    padding: [0,0,1em,0];
+    hidden: HIDDEN;
+    focusable: ENABLED;
+    onEvent(activate, EVENT);
+
+    alpha: select(isHovered() || isFocused() || isPressed(), 1, 0.5);
+
+    widget(container_x, {
+      align: center;
+      widget(icon, {
+source: "dataroot://resources/svg/Check.svg";
+      });
+      widget(label, {
+caption: _("OK");
+      });
+    });
+  });
+
+}
+
+
+#define LIST_Y_SLIDER(ID, FOCUSABLE=false) {
+
+  widget(slider_y, {
+
+    bind(ID);
+
+    .width = 24;
+    .focusable = 0.2 * canScroll();
+    .navFocusable = FOCUSABLE;
+
+    .alpha = iir(canScroll(), 16);
+    widget(container_x, {
+      padding: [0.2em,0,0.2em, 0];
+      widget(quad, {
+	     alpha: 0.6 + (isHovered() + isPressed());
+      });
+    });
+  });
+}
+
+#define LIST_X_SLIDER(ID, FOCUSABLE=false) {
+
+  widget(slider_x, {
+
+    bind(ID);
+
+    .height = 24;
+    .focusable = 0.2 * canScroll();
+    .navFocusable = FOCUSABLE;
+
+    .alpha = iir(canScroll(), 16);
+    widget(container_y, {
+      padding: [0.2em,0,0.2em, 0];
+      widget(quad, {
+	     alpha: 0.6 + (isHovered() + isPressed());
+      });
+    });
+  });
+}
+
+
+#define STAR_FULL() {
+  widget(icon, {
+    color: [1, 1, 0.2];
+    source: "dataroot://resources/svg/Star.svg";
+  });
+}
+
+#define STAR_DIMMED() {
+  widget(icon, {
+    color: [0.33, 0.33, 0];
+    shadow: true;
+    source: "dataroot://resources/svg/Star.svg";
+  });
+}
+
+#define TextStyleItem() {
+  //font: $ui.font;
+  //font: "fonts/Segoe/segoeuil.ttf";
+  shadow: true;
+  outline: true;
+}
+
+#define BUTTONTXT(ICON, CAPTION, EVENT, ENABLED, ID) {
+  widget(container_x, {
+    focusable: ENABLED;
+    onEvent(activate, EVENT);
+    align: center;
+    spacing: 0.5em;
+
+    widget(quad, {
+      additive: true;
+      alpha: 0.1 * isHovered() + 0.6 * isNavFocused();
+    });
+
+    widget(icon, {
+      source: ICON;
+      size: 2em;
+      color: select(isNavFocused(), 0, 1);
+      alpha: 0.7 * iir(ENABLED, 8) + 0.3;
+    });
+
+    widget(label, {
+      caption: CAPTION;
+      color: select(isNavFocused(), 0, 1);
+    });
+  });
+}

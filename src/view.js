@@ -1,6 +1,7 @@
 var page = require('movian/page');
 var service = require('movian/service');
 var popup = require('movian/popup');
+var prop = require('movian/prop');
 const Utils = require('./utils');
 const Api = require('./api');
 
@@ -14,8 +15,8 @@ class View {
     this.routes = [
       {
         path: `start`,
-        // view: this.showDebug
-        view: this.showHome
+        view: this.showDebug
+        // view: this.showHome
       },
       {
         path: `search:(.*)`,
@@ -397,11 +398,26 @@ class View {
   }
 
   showDebug = (page) => {
-    page.metadata.glwview = Plugin.path + "views/loading.view";
+    this.setPageHeader(page, "Debug");
+    page.loading = true;
+
+    var profiles = [
+      { name: "Add new profile", avatar: this.plugin.path + "assets/add_circle.svg" },
+    ];
+
+    let i = 0;
+    while (i < 3) {
+      profiles.push({ name: "Profile " + i, avatar: `${service.host}/Users/f115ca98da1e48e1b110f4f3eac99ca4/Images/Primary?tag=5f87fc5a7a357d05cfc2c5424f683f7a&quality=90` });
+      i++;
+    }
+
+    console.log(profiles);
+
+    page.metadata.profiles = profiles;
+
+    page.metadata.glwview = this.plugin.path + "views/profiles.view";
     page.type = 'raw';
     page.loading = false;
-
-    page.model.metadata.progress = 10;
   }
 
   setPageHeader(page, title) {

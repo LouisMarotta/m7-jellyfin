@@ -1,0 +1,102 @@
+#import "skin://theme.view"
+#import "common.view"
+
+widget(container_y, {
+  style: "PageContainer";
+
+  // Header with back button
+  widget(container_z, {
+    height: 3em;
+    zoffset: 10;
+    widget(quad, {
+      color: 0;
+      alpha: 0.2;
+    });
+
+    widget(container_x, {
+      hidden: !$nav.canGoBack;
+      BackButton();
+      space(1);
+    });
+  });
+
+  // Title
+  widget(label, {
+    style: "PageTitle";
+    caption: _("Who's watching?");
+    margin: [2em, 1.5em, 0, 0];
+    size: 2em;
+    align: center;
+  });
+
+  // Profile carousel
+  widget(list_x, {
+    spacing: 2em;
+    scrollThreshold: $ui.width / 10;
+    navWrap: true;
+    chaseFocus: true;
+
+    // Profile items will be cloned here
+    cloner($self.model.metadata.profiles, container_y, {
+      focusable: true;
+      width: 8em;
+      height: 12em;
+
+      onEvent(activate, {
+        // Set selected profile and continue
+        $self.selectedProfile := $self;
+        deliverEvent($self, "profileSelected");
+      });
+
+      // Profile avatar
+      widget(image, {
+        source: $self.avatar;
+        width: 6em;
+        height: 6em;
+        margin: [0, 1em];
+        color: iir(isFocused(), 4) * 0.5 + 0.5;
+      });
+
+      // Profile name
+      widget(label, {
+        caption: $self.name;
+        align: center;
+        margin: [1em, 0];
+        color: iir(isFocused(), 4) * 0.5 + 0.5;
+        shadow: true;
+        outline: true;
+      });
+
+      // Selection indicator
+      widget(border, {
+        style: "FocusBorder";
+        hidden: !$self.focused;
+      });
+    });
+  });
+
+  // Add profile button
+  widget(container_y, {
+    focusable: true;
+    width: 8em;
+    height: 12em;
+
+    onEvent(activate, {
+      deliverEvent($self, "addProfile");
+    });
+
+    /*
+    widget(label, {
+      caption: _("Add Profile");
+      align: center;
+      margin: [1em, 0];
+    });
+    */
+
+    widget(container_x, {
+      align: center;
+      BUTTONTXT('plugin://jellyfin/assets/profile.svg', _("Add Profile"), deliverEvent($self, "addProfile"), false, 'xd');
+    });
+  });
+
+});
