@@ -64,7 +64,6 @@ class Settings {
     settings.createMultiOpt('default_sort_by', this.trans.l('setting.default_sort_by'), sortByOptions, function (value) {
       service.default_sort_by = value;
     });
-
     let sortOrderOptions = [
       ['asc', this.trans.l('sort.order_asc'), false],
       ['desc', this.trans.l('sort.order_desc'), false]
@@ -78,6 +77,9 @@ class Settings {
       service.default_sort_order = value;
     });
 
+    settings.createBool('enable_tracking', this.trans.l('setting.enable_tracking'), true, function (value) {
+      service.enable_tracking = value;
+    });
 
     settings.createDivider('Plugin');
 

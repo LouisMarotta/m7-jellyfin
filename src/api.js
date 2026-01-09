@@ -402,6 +402,47 @@ class Api {
 
     return path;
   }
+
+  setTrackingPlaying(item, paused, canSeek = true, volume = 100) {
+    console.log(item);
+    console.log('playing');
+    console.log('paused', paused);
+    console.log('canSeek', canSeek);
+    console.log('volume', volume);
+
+    // let params = {
+    //   ItemId: item,
+    //   CanSeek: true,
+    //   VolumeLevel: volume,
+    //   RepeatMode: 'none'
+    // }
+
+    // params = utils.paramsToString(params);
+    // fetch(`${service.host}/Sessions/Playing?${params}`, {
+    //   method: 'POST',
+    //   headers: this.getDefaultHeaders(),
+    //   postdata: JSON.stringify(params)
+    // });
+  }
+
+  setTrackingProgress(item, paused, canSeek = true, volume = 100) {
+    console.log(item);
+    console.log('progress');
+    console.log('paused', paused);
+    console.log('canSeek', canSeek);
+    console.log('volume', volume);
+
+
+  }
+
+  setTrackingStopped(item, paused, canSeek = true, volume = 100) {
+    console.log(item);
+    console.log('stopped');
+    console.log('paused', paused);
+    console.log('canSeek', canSeek);
+    console.log('volume', volume);
+
+  }
 }
 
 module.exports = Api;

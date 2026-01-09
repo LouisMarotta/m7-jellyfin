@@ -9,6 +9,7 @@
   "setting.insecure_images": "Recupe le immagini tramite URL non sicuro",
   "setting.default_sort_by": "Default sorting",
   "setting.default_sort_order": "Default sorting order",
+  "setting.enable_tracking": "Enable scrobbling",
   "action.credits": "View credits",
   "action.update": "Update {{plugin_name}}",
   "plugin.updating": "Updating {{plugin_name}}, please wait...",

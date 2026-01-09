@@ -3,6 +3,7 @@ var service = require('movian/service');
 var popup = require('movian/popup');
 const Utils = require('./utils');
 const Api = require('./api');
+const Tracking = require('./tracking');
 
 var utils = new Utils();
 
@@ -52,6 +53,12 @@ class View {
 
     this.sort_by = service.default_sort_by ?? null;
     this.sort_order = service.default_sort_order ?? null;
+
+    this.tracking = null;
+    if (service.enable_tracking && Tracking.canScrobble()) {
+      console.log('Tracking enabled');
+      this.tracking = new Tracking();
+    }
   }
 
   get prefix() {
