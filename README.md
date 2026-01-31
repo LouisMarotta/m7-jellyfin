@@ -27,8 +27,8 @@ In the plugin's settings, you can add the credentials to your Jellyfin's user.
 ## Building
 
 ```
-npm install
-npm run build
+pnpm i
+pnpm run build
 ```
 
 This will generate the zip into the `/dist` folder

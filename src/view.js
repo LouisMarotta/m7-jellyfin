@@ -51,6 +51,12 @@ class View {
     this.api = new Api();
     this.user = {};
 
+    this.filters = {
+      'movies': 1,
+      'tvseries': 1,
+      'episodes': 1,
+      'music': 1
+    };
     this.sort_by = service.default_sort_by ?? null;
     this.sort_order = service.default_sort_order ?? null;
 
@@ -111,7 +117,8 @@ class View {
     if (items.length > 0) {
       page.appendItem('', 'separator', { title: this.trans.l('home.libraries') });
       items.forEach(item => {
-        page.appendItem(`${this.prefix}:library:${item.Id}`, 'directory', {
+        let { path, type } = this.getMediaPath(item);
+        page.appendItem(path, type, {
           title: item.Name,
           icon: this.api.getItemImage(item.Id, 'Primary')
         });
@@ -130,6 +137,35 @@ class View {
     page.contents = 'list';
     page.metadata.title = this.trans.l('search.title', { query: query });
 
+    let search = () => {
+      let data = this.api.getItems(query, 100, this.filters);
+      let items = data.Items ?? [];
+
+      if (items.length > 0) {
+        let categories = {
+          'movies': items.filter((item) => ['Movie'].indexOf(item.Type) > -1),
+          'series': items.filter((item) => ['Series'].indexOf(item.Type) > -1),
+          'episode': items.filter((item) => ['Episode'].indexOf(item.Type) > -1),
+          'music': items.filter((item) => ['MusicAlbum'].indexOf(item.Type) > -1),
+        }
+
+        Object.entries(categories).forEach(([key, items]) => {
+          if (items.length > 0) {
+            page.appendItem('', 'separator', { title: this.trans.l(`search.${key}`) });
+            items.forEach((item) => {
+              let mediaItem = this.api.parseItem(item);
+              let { path, type } = this.getMediaPath(item);
+              page.appendItem(path, type, mediaItem);
+            });
+          }
+        });
+      } else {
+        page.error(this.trans.l('search.no_results', { query: query }));
+      }
+    }
+    this.setFilters(page, search);
+
+    page.loading = false;
   }
 
   showLibrary = (page, id) => {
@@ -149,27 +185,17 @@ class View {
     var limit = 20;
     var hasMore = true;
 
-    var mediaTypes = {
-      'Series': {
-        'path': this.prefix + ':series:'
-      },
-      'Movie': {
-        'path': this.prefix + ':video:'
-      }
-    };
-
     function browse() {
       if (!hasMore) return;
 
       setTimeout(() => {
         var data = this.api.getItemsData(id, offset, limit, this.sort_by, this.sort_order);
 
-        // popup.notify(JSON.stringify(data), 3);
         let items = data.Items ?? [];
         items.forEach((item) => {
           let mediaItem = this.api.parseItem(item);
-          let path = this.api.getPath(this.prefix, item.Id, item.Type);
-          let pageItem = page.appendItem(path, 'video', mediaItem);
+          let { path, type } = this.getMediaPath(item);
+          let pageItem = page.appendItem(path, type, mediaItem);
 
           if (item.Id && mediaItem) {
             this.cache.set(`item:${item.Id}`, mediaItem);
@@ -222,8 +248,8 @@ class View {
         })
       }
 
-      var path = `${this.prefix}:series:${series}:season:${season.Id}`;
-      page.appendItem(path, 'directory', mediaItem);
+      let { path, type } = this.getMediaPath(season, { 'series': series, 'season': season.Id });
+      page.appendItem(path, type, mediaItem);
     });
 
     page.loading = false;
@@ -247,8 +273,8 @@ class View {
 
     episodes.forEach((episode) => {
       var mediaItem = this.api.parseItem(episode);
-      var path = this.api.getPath(this.prefix, episode.Id, episode.Type);
-      let pageItem = page.appendItem(path, 'video', mediaItem)
+      var { path, type } = this.getMediaPath(episode);
+      let pageItem = page.appendItem(path, type, mediaItem)
     });
 
     page.loading = false;
@@ -270,8 +296,8 @@ class View {
     let songs = this.api.getAlbumSongs(album)['Items'] ?? [];
     songs.forEach((song) => {
       var mediaItem = this.api.parseItem(song);
-      var path = this.api.getSongUrl(song.Id);
-      let pageItem = page.appendItem(path, 'audio', mediaItem)
+      var { path, type } = this.getMediaPath(song, { 'album': album });
+      let pageItem = page.appendItem(path, type, mediaItem)
     });
 
     page.loading = false;
@@ -429,6 +455,29 @@ class View {
     page.loading = true;
   }
 
+  setFilters(page, callback = {}) {
+    let filters = {};
+    Object.entries(this.filters).forEach(([key, value]) => {
+      filters[key] = { title: this.trans.l(`search.filters.${key}`), value: value };
+    })
+
+    let optionChanged = (value, type) => {
+      this.filters[type] = value;
+      page.flush();
+      if (typeof callback === 'function') {
+        callback(value);
+      }
+    };
+
+    page.options.createDivider(this.trans.l('search.filters.title'));
+    Object.entries(filters).forEach(([key, data]) => {
+      page.options.createBool(key, data.title, data.value, (value) => {
+        optionChanged(value, key);
+      });
+    });
+
+  }
+
   setSorting(page, callback = false) {
     let sortByOpts = [];
     let sortOrderOpts = [
@@ -467,6 +516,11 @@ class View {
     page.options.createMultiOpt('sort_order', this.trans.l('page.sort_order'), sortOrderOpts, (value) => {
       optionChanged(value, 'sort_order');
     });
+  }
+
+  getMediaPath(item, context = {}) {
+    context = { prefix: this.prefix, ...context }
+    return this.api.getMediaPath(item, context);
   }
 
 }

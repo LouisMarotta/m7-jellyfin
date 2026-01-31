@@ -83,6 +83,10 @@ class Settings {
 
     settings.createDivider('Plugin');
 
+    settings.createBool('check_updates', this.trans.l('setting.check_updates'), true, (value) => {
+      service.check_updates = value;
+    });
+
     settings.createAction('update', this.trans.l('action.update', { plugin_name: this.title }), () => {
       popup.notify(this.trans.l('plugin.updating', { plugin_name: this.title }), 5);
       this.navigator.openUrl(Utils.getLatestPlugin());

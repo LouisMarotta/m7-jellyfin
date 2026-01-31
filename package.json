@@ -1,6 +1,6 @@
 {
   "name": "movian7-jellyfin",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Stream your TV Shows and Movies from your <a href=\"https://jellyfin.org/\">Jellyfin</a> instance.",
   "keywords": [
     "swc",
@@ -21,8 +21,8 @@
     "lint": "eslint ./src"
   },
   "devDependencies": {
-    "@swc/cli": "^0.7.9",
-    "@swc/core": "^1.15.3",
+    "@swc/cli": "^0.7.10",
+    "@swc/core": "^1.15.10",
     "@swc-node/register": "^1.8.0",
     "eslint": "^8.56.0",
     "prettier": "^3.2.5",

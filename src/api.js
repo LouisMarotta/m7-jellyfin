@@ -12,17 +12,16 @@ class Api {
     date_added: 'DateCreated',
     last_played: 'DatePlayed'
   }
-  static mediaTypes = {
-    'Series': {
-      'path': ':series:'
-    },
-    'Movie': {
-      'path': ':video:'
-    },
-    'MusicAlbum': {
-      'path': ':album:'
-    },
+  static mediaMap = {
+    'collectionfolder': '{{prefix}}:library:{{id}}',
+    'manualplaylistsfolder': '{{prefix}}:library:{{id}}',
+    'playlist': '{{prefix}}:library:{{id}}',
+    'series': '{{prefix}}:series:{{id}}',
+    'season': '{{prefix}}:series:{{id}}:season:{{season}}',
+    'episode': '{{prefix}}:video:{{episode}}',
+    'musicalbum': '{{prefix}}:album:{{id}}',
   };
+
   constructor(user = {}) {
     this.user = user;
   }
@@ -164,6 +163,50 @@ class Api {
     }
     params = utils.paramsToString(params);
     var url = `${this.host}/Users/${this.user.Id}/Items?${params}`;
+
+    var response = http.request(url, {
+      method: 'GET',
+      headers: this.getDefaultHeaders()
+    });
+
+    if (response.statuscode && response.statuscode == 200) {
+      response = JSON.parse(response);
+    }
+
+    return response;
+  }
+
+  /**
+   * Get items from query
+   * @param {string} query
+   * @param {Number} limit
+   * @returns Object
+   */
+  getItems = (query = '', limit = 100, itemTypes = {}) => {
+    let types = {
+      'movies': 'Movie',
+      'tvseries': 'Series',
+      'episodes': 'Episode',
+      'music': 'MusicAlbum'
+    }
+
+    let includedItemTypes = [];
+    Object.entries(itemTypes).forEach(([key, value]) => {
+      if (typeof types[key] !== 'undefined' && value) {
+        includedItemTypes.push(types[key]);
+      }
+    });
+
+    let params = {
+      userId: this.user.Id,
+      limit: limit,
+      searchTerm: query,
+      includeItemTypes: includedItemTypes.join(','),
+      recursive: true,
+    }
+
+    params = utils.paramsToString(params);
+    let url = `${this.host}/Items?${params}`;
 
     var response = http.request(url, {
       method: 'GET',
@@ -394,13 +437,41 @@ class Api {
     return `${this.host}/Audio/${id}/universal?${params}`;
   }
 
-  getPath = function (prefix, id, type) {
-    var path = `${prefix}:video:${id}`;
-    if (typeof Api.mediaTypes[type] !== 'undefined') {
-      path = prefix + Api.mediaTypes[type]['path'] + id;
+  getMediaPath = function (item, context = {}) {
+    let path = null;
+
+    let id = item.Id ?? 0;
+    let type = (item.Type).toLowerCase() ?? 'video';
+    let mediaType = (item.MediaType).toLowerCase() ?? null;
+
+    if (mediaType == 'video') {
+      path = '{{prefix}}:video:{{id}}';
     }
 
-    return path;
+    if (mediaType == 'audio') {
+      path = this.getSongUrl(id);
+    }
+
+    if (!path && typeof Api.mediaMap[type] !== 'undefined') {
+      path = Api.mediaMap[type];
+    }
+
+    context.id = id;
+    if (path) {
+      path = path.replace(/\{\{(\w+)\}\}/g, (match, placeholder) => {
+        return typeof context[placeholder] !== 'undefined' ? context[placeholder] : match;
+      });
+    }
+
+    let item = 'directory';
+    if (['movie', 'episode'].indexOf(type) > -1) {
+      item = 'video';
+    }
+    if (['audio'].indexOf(type) > -1) {
+      item = 'audio';
+    }
+
+    return { path, type: item };
   }
 
   setTrackingPlaying(item, paused, canSeek = true, volume = 100) {
