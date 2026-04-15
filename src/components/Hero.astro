@@ -1,0 +1,64 @@
+---
+---
+
+<div class="hero-container">
+    <div class="hero-card">
+        <img class="logo" src="/logo.png" />
+        <h1>Jellyfin for Movian</h1>
+
+        <p class="tagline">Watch Jellyfin on your PS3, Raspberry Pi, and more...</p>
+
+        <div class="hero-buttons">
+            <img></img>
+        </div>
+    </div>
+</div>
+
+<style>
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='120' height='20' patternTransform='scale(3) rotate(0)'><rect x='0' y='0' width='100%' height='100%' fill='%23ffffffff'/><path d='M-50.129 12.685C-33.346 12.358-16.786 4.918 0 5c16.787.082 43.213 10 60 10s43.213-9.918 60-10c16.786-.082 33.346 7.358 50.129 7.685'  stroke-width='1' stroke='%234a4a4a2e' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>");
+    min-height: 360px;
+
+    padding: 4px 4px 64px 4px;
+}
+
+.hero-card {
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 24px;
+
+}
+
+@media (min-width: 768px) {
+    .hero-container {
+        min-height: 360px;
+        padding: 24px 24px 128px 24px;
+    }
+
+    .hero-card {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 45%;
+        left: 50%;
+    }
+}
+
+.logo {
+    display: block;
+    margin: auto;
+    width: 100px;
+}
+
+.hero-card h1 {
+    text-align: center;
+}
+
+.hero-card .tagline {
+    color: #4b5563;
+}
+</style>

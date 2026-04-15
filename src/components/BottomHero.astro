@@ -1,0 +1,28 @@
+<div class="block">
+    <div class="block-content">
+        <slot />
+    </div>
+</div>
+
+<style>
+.block {
+    position: relative;
+    margin-top: -50px; 
+    z-index: 10;
+    color: white;
+    min-height: 300px;
+    
+    background-color: rgb(19, 43, 129);    
+    border-top-left-radius: 50% 20%;
+    border-top-right-radius: 50% 20%;
+    
+    box-shadow: 0 -10px 20px rgba(0,0,0,0.1);
+}
+
+.block-content {
+    padding: 40px 20px;
+    position: relative;
+    z-index: 2;
+}
+
+</style>

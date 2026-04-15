@@ -1,0 +1,23 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Hero from "../../components/Hero.astro";
+import BottomHero from "../../components/BottomHero.astro";
+
+// Handle translations
+import { Locale } from "@mannisto/astro-i18n/runtime";
+
+export const getStaticPaths = () => {
+	return Locale.supported.map((code) => ({
+		params: { locale: code },
+	}));
+};
+
+const t = Locale.t(Astro.url);
+---
+
+<Layout>
+	<Hero />
+	<BottomHero>
+		<p>test</p>
+	</BottomHero>
+</Layout>
