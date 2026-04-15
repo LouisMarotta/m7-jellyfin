@@ -3,10 +3,16 @@ import i18n from "@mannisto/astro-i18n";
 import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
-let base = process?.env?.CI 
+let isCi = process?.env?.CI;
+let site = isCi
+    ? 'https://louismarotta.github.io'
+    : undefined;
+let base = isCi 
     ? '/m7-jellyfin' 
     : '';
 export default defineConfig({
+    outDir: './dist',
+    site: site,
     base: base,
     integrations: [
         i18n({
