@@ -1,0 +1,44 @@
+<div class="feature">
+    <div class="feature-header">
+        <div class="icon">
+            <slot name="icon" />
+        </div>
+        <slot class="title" name="title" />
+    </div>
+
+    <div class="description">
+        <slot name="description" />
+    </div>
+</div>
+
+
+<style>
+	.feature {
+		border: 1px solid #fff;
+        background-color: #fff;
+        color: #000;
+		border-radius: 10px;
+		padding: 20px;
+	}
+
+    .feature-header {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        margin-bottom: 16px;
+    }
+
+    .feature-header h3 {
+        margin: 0px;
+    }
+
+    .description {
+        color: gray;
+    }
+
+    .title {
+        font-size: large;
+        font-weight: 700;
+    }
+</style>

@@ -1,7 +1,10 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Hero from "../../components/Hero.astro";
+import Feature from "../../components/Feature.astro";
 import BottomHero from "../../components/BottomHero.astro";
+
+import { Gamepad2, Play, Feather, FolderGit2 } from '@lucide/astro';
 
 // Handle translations
 import { Locale } from "@mannisto/astro-i18n/runtime";
@@ -18,6 +21,66 @@ const t = Locale.t(Astro.url);
 <Layout>
 	<Hero />
 	<BottomHero>
-		<p>test</p>
+		<div class="features-grid" style="margin-top: 60px;">
+			<Feature>
+				<span slot="icon"><Feather size={32} /></span>
+				<h3 slot="title">Lightweight</h3>
+				<span slot="description">Uses 50% less ram compared to the official Web Client</span>
+			</Feature>
+			<Feature>
+				<span slot="icon"><Play size={32} /></span>
+				<h3 slot="title">Play your media!</h3>
+				<span slot="description">Always connected!</span>
+			</Feature>
+			<Feature>
+				<span slot="icon"><Gamepad2 size={32} /></span>
+				<h3 slot="title">Supports your devices!</h3>
+				<span slot="description">There's no reason not to give a second life to your old consoles, Raspberry Pi's.</span>
+			</Feature>
+			<Feature>
+				<span slot="icon"><FolderGit2 size={32} /></span>
+				<h3 slot="title">Open-source!</h3>
+				<span slot="description">This project is open source, contributions are welcomed!</span>
+			</Feature>
+		</div>
 	</BottomHero>
+	<div style="color: white; background-color: #373737; padding: 16px 0 0 0;">
+		<h2 style="font-weight: 400; text-align: center;">Wanna get started?</h2>
+
+		<span>Check the guide for your platform!</span>
+
+		<div class="platform-container">
+			<a>
+				PS3
+			</a>
+
+			<a>
+				Raspberry Pi / Linux
+			</a>
+
+			<a>
+				Windows
+			</a>
+		</div>
+	</div>
 </Layout>
+
+
+<style>
+	.features-grid {
+		max-width: 1024px;
+		margin: auto;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 20px;
+	}
+
+	.platform-container {
+		max-width: 1024px;
+		margin: auto;
+		display: flex;
+		gap: 20px;
+
+		align-content: center;
+	}
+</style>

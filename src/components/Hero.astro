@@ -1,15 +1,19 @@
 ---
+import jellyfinLogo from '../assets/jellyfin.png';
+import githubBadge from '../assets/badge_github.png';
 ---
 
 <div class="hero-container">
     <div class="hero-card">
-        <img class="logo" src="/logo.png" />
+        <img class="logo" src={jellyfinLogo.src} />
         <h1>Jellyfin for Movian</h1>
 
         <p class="tagline">Watch Jellyfin on your PS3, Raspberry Pi, and more...</p>
 
         <div class="hero-buttons">
-            <img></img>
+            <a href="https://github.com/LouisMarotta/m7-jellyfin/releases/latest" target="_blank">
+                <img class="action" src={githubBadge.src} height="80px"></img>
+            </a>
         </div>
     </div>
 </div>
@@ -24,6 +28,10 @@
     min-height: 360px;
 
     padding: 4px 4px 64px 4px;
+
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
 }
 
 .hero-card {
@@ -60,5 +68,10 @@
 
 .hero-card .tagline {
     color: #4b5563;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: space-around;
 }
 </style>
