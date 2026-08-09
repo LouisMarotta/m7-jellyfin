@@ -20,6 +20,7 @@ class Api {
     'season': '{{prefix}}:series:{{id}}:season:{{season}}',
     'episode': '{{prefix}}:video:{{episode}}',
     'musicalbum': '{{prefix}}:album:{{id}}',
+    'channel': '{{prefix}}:video:{{id}}'
   };
 
   constructor(user = {}) {
@@ -313,7 +314,7 @@ class Api {
   }
 
   getItemData = function (id) {
-    var url = `${this.host}/Users/${this.user.Id}/Items/${id}`;
+    var url = `${this.host}/Users/${this.user.Id}/Items/${id}?Fields=MediaStreams`;
     var response = http.request(url, {
       method: 'GET',
       headers: this.getDefaultHeaders()
@@ -328,6 +329,35 @@ class Api {
 
   getPlaybackInfo = function (id) {
     var url = `${this.host}/Items/${id}/PlaybackInfo`;
+    var response = http.request(url, {
+      method: 'GET',
+      headers: this.getDefaultHeaders()
+    });
+
+    if (response.statuscode && response.statuscode == 200) {
+      response = JSON.parse(response);
+    }
+
+    return response;
+  }
+
+  getLiveTvChannels = function (offset = 0, limit = 100, sortBy = null, sortOrder = 'Ascending') {
+    let params = {
+      userId: this.user.Id,
+      startIndex: offset,
+      limit: limit,
+      sortBy: sortBy ?? Api.defaultSorting,
+      sortOrder: sortOrder,
+      addCurrentProgram: true,
+      enableFavoriteSorting: true,
+      enableUserData: false,
+      Fields: ['PrimaryImageAspectRatio', 'MediaSourceCount', 'ChannelImage'].join(','),
+      ImageTypeLimit: 1,
+      EnableImageTypes: ['Primary', 'Backdrop', 'Thumb'].join(',')
+    };
+
+    params = utils.paramsToString(params);
+    var url = `${this.host}/LiveTv/Channels?${params}`;
     var response = http.request(url, {
       method: 'GET',
       headers: this.getDefaultHeaders()
@@ -359,6 +389,14 @@ class Api {
           fillWidth: 600,
           fillHeight: 600,
           quality: 90
+        });
+        break;
+      case 'Channel':
+        icon = this.getItemImage(item.Id, 'Primary', {
+          fillHeight: 177,
+          fillWidth: 315,
+          quality: 96,
+          format: 'Jpg'
         });
         break;
       case 'Audio':
@@ -413,6 +451,12 @@ class Api {
 
     if (typeof item.Overview !== 'undefined') {
       mediaItem.description = item.Overview;
+    }
+
+    if (['Channel'].indexOf(item.Type) > -1) {
+      if (typeof item.CurrentProgram !== 'undefined' && item.CurrentProgram.Name) {
+        mediaItem.description = item.CurrentProgram.Name;
+      }
     }
 
     if (['Audio'].indexOf(item.Type) > -1) {
@@ -473,7 +517,7 @@ class Api {
     }
 
     let item = 'directory';
-    if (['movie', 'episode'].indexOf(type) > -1) {
+    if (['movie', 'episode', 'channel'].indexOf(type) > -1) {
       item = 'video';
     }
     if (['audio'].indexOf(type) > -1) {
