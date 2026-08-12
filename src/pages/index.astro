@@ -1,0 +1,9 @@
+---
+// Root page: redirect to the default locale (en).
+// With `prefixDefaultLocale: true`, the default locale lives at /en/.
+// Use getRelativeLocaleUrl so the base path (e.g. /m7-jellyfin) is included.
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+const target = getRelativeLocaleUrl("en", "/");
+return Astro.redirect(target);
+---

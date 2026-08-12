@@ -1,9 +1,9 @@
 ---
 import jellyfinLogo from '../assets/jellyfin.png';
 import githubBadge from '../assets/badge_github.png';
-import { Locale } from "@mannisto/astro-i18n/runtime";
+import { getT } from "../i18n/translations";
 
-const t = Locale.t(Astro.url);
+const t = getT(Astro.currentLocale ?? "en");
 ---
 
 <div class="hero-container">

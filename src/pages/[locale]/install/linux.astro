@@ -2,15 +2,15 @@
 import Layout from "../../../layouts/Layout.astro";
 import InstallLayout from "../../../components/InstallLayout.astro";
 
-import { Locale } from "@mannisto/astro-i18n/runtime";
+import { getT } from "../../../i18n/translations";
 
 export const getStaticPaths = () => {
-	return Locale.supported.map((code) => ({
+	return ["en", "it"].map((code) => ({
 		params: { locale: code },
 	}));
 };
 
-const t = Locale.t(Astro.url);
+const t = getT(Astro.currentLocale ?? "en");
 
 const steps = [
 	t("install.linux.step1"),

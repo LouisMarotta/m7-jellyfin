@@ -1,12 +1,18 @@
 ---
-import { Locale } from "@mannisto/astro-i18n/runtime";
+import { pathHasLocale } from "astro:i18n";
+import { localeUrl, stripLocaleFromPath } from "../i18n/url";
 import jellyfinLogo from '../assets/jellyfin.png';
 
-const locale = Locale.from(Astro.url);
+const locale = Astro.currentLocale ?? "en";
 
-const homePath = Locale.url(locale, "/");
+const homePath = localeUrl(locale, "/");
 
-const currentPath = Astro.url.pathname;
+// On pages without a locale prefix (e.g. the 404 page), link the language
+// switcher to the home page instead of the current (invalid) path.
+const currentPath = pathHasLocale(Astro.url.pathname)
+    ? stripLocaleFromPath(Astro.url.pathname)
+    : "/";
+const locales = ["en", "it"];
 ---
 
 <header class="nav">
@@ -18,9 +24,9 @@ const currentPath = Astro.url.pathname;
 
         <div class="lang-switcher">
             {
-                Locale.supported.map((code) => (
+                locales.map((code) => (
                     <a
-                        href={Locale.url(code, currentPath)}
+                        href={localeUrl(code, currentPath)}
                         class:list={{ active: code === locale }}
                         aria-label={code}
                     >

@@ -1,10 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Locale } from "@mannisto/astro-i18n/runtime";
+import { localeUrl } from "../i18n/url";
 import { House } from '@lucide/astro';
 
-const locale = Locale.from(Astro.url);
-const homePath = Locale.url(locale, "/");
+const locale = Astro.currentLocale ?? "en";
+const homePath = localeUrl(locale, "/");
 ---
 
 <Layout>

@@ -7,20 +7,21 @@ import BottomHero from "../../components/BottomHero.astro";
 import { Gamepad2, Play, Feather, FolderGit2, Zap, Shield, ArrowRight, Monitor, Gamepad, Laptop } from '@lucide/astro';
 
 // Handle translations
-import { Locale } from "@mannisto/astro-i18n/runtime";
+import { getT } from "../../i18n/translations";
+import { localeUrl } from "../../i18n/url";
 
 export const getStaticPaths = () => {
-	return Locale.supported.map((code) => ({
+	return ["en", "it"].map((code) => ({
 		params: { locale: code },
 	}));
 };
 
-const t = Locale.t(Astro.url);
-const locale = Locale.from(Astro.url);
+const locale = Astro.currentLocale ?? "en";
+const t = getT(locale);
 
-const ps3Path = Locale.url(locale, "/install/ps3");
-const linuxPath = Locale.url(locale, "/install/linux");
-const windowsPath = Locale.url(locale, "/install/windows");
+const ps3Path = localeUrl(locale, "/install/ps3");
+const linuxPath = localeUrl(locale, "/install/linux");
+const windowsPath = localeUrl(locale, "/install/windows");
 ---
 
 <Layout showNav={false}>

@@ -1,11 +1,11 @@
 ---
 import "normalize.css";
-import { Locale } from "@mannisto/astro-i18n/runtime"
+import { getT } from "../i18n/translations";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 
-const locale = Locale.from(Astro.url)
-const t = Locale.t(Astro.url)
+const locale = Astro.currentLocale ?? "en";
+const t = getT(locale)
 
 const { title, showNav = true } = Astro.props;
 ---
@@ -18,8 +18,8 @@ const { title, showNav = true } = Astro.props;
 		</script>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL.replace(/\/?$/, "/")}favicon.svg`} />
+		<link rel="icon" href={`${import.meta.env.BASE_URL.replace(/\/?$/, "/")}favicon.ico`} />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={t("footer.tagline")} />
 		<title>{title ? `${title} · M7 Jellyfin` : "M7 Jellyfin"}</title>

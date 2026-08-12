@@ -1,7 +1,7 @@
 ---
-import { Locale } from "@mannisto/astro-i18n/runtime";
+import { getT } from "../i18n/translations";
 
-const t = Locale.t(Astro.url);
+const t = getT(Astro.currentLocale ?? "en");
 ---
 
 <footer class="footer">

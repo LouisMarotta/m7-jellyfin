@@ -1,11 +1,12 @@
 ---
-import { Locale } from "@mannisto/astro-i18n/runtime";
+import { getT } from "../i18n/translations";
+import { localeUrl } from "../i18n/url";
 import { ArrowLeft, ExternalLink, Download, CircleCheck } from '@lucide/astro';
 
-const locale = Locale.from(Astro.url);
-const t = Locale.t(Astro.url);
+const locale = Astro.currentLocale ?? "en";
+const t = getT(locale);
 
-const homePath = Locale.url(locale, "/");
+const homePath = localeUrl(locale, "/");
 
 const {
     platform,       // "ps3" | "linux" | "windows"
@@ -17,9 +18,9 @@ const {
 } = Astro.props;
 
 const otherPlatforms = [
-    { key: "ps3", name: t("install.ps3.name"), summary: t("install.ps3.summary"), path: Locale.url(locale, "/install/ps3") },
-    { key: "linux", name: t("install.linux.name"), summary: t("install.linux.summary"), path: Locale.url(locale, "/install/linux") },
-    { key: "windows", name: t("install.windows.name"), summary: t("install.windows.summary"), path: Locale.url(locale, "/install/windows") },
+    { key: "ps3", name: t("install.ps3.name"), summary: t("install.ps3.summary"), path: localeUrl(locale, "/install/ps3") },
+    { key: "linux", name: t("install.linux.name"), summary: t("install.linux.summary"), path: localeUrl(locale, "/install/linux") },
+    { key: "windows", name: t("install.windows.name"), summary: t("install.windows.summary"), path: localeUrl(locale, "/install/windows") },
 ].filter((p) => p.key !== platform);
 
 const title = t("install.title").replace("{platform}", platformName);
