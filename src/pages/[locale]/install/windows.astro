@@ -1,0 +1,32 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import InstallLayout from "../../../components/InstallLayout.astro";
+
+import { Locale } from "@mannisto/astro-i18n/runtime";
+
+export const getStaticPaths = () => {
+	return Locale.supported.map((code) => ({
+		params: { locale: code },
+	}));
+};
+
+const t = Locale.t(Astro.url);
+
+const steps = [
+	t("install.windows.step1"),
+	t("install.windows.step2"),
+	t("install.windows.step3"),
+	t("install.windows.step4"),
+];
+---
+
+<Layout title={t("install.windows.name")}>
+	<InstallLayout
+		platform="windows"
+		platformName={t("install.windows.name")}
+		requirements={t("install.requirements.windows")}
+		steps={steps}
+		githubUrl="https://github.com/LouisMarotta/m7-jellyfin#readme"
+		releasesUrl="https://github.com/LouisMarotta/m7-jellyfin/releases/latest"
+	/>
+</Layout>

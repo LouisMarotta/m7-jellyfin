@@ -1,0 +1,32 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import InstallLayout from "../../../components/InstallLayout.astro";
+
+import { Locale } from "@mannisto/astro-i18n/runtime";
+
+export const getStaticPaths = () => {
+	return Locale.supported.map((code) => ({
+		params: { locale: code },
+	}));
+};
+
+const t = Locale.t(Astro.url);
+
+const steps = [
+	t("install.linux.step1"),
+	t("install.linux.step2"),
+	t("install.linux.step3"),
+	t("install.linux.step4"),
+];
+---
+
+<Layout title={t("install.linux.name")}>
+	<InstallLayout
+		platform="linux"
+		platformName={t("install.linux.name")}
+		requirements={t("install.requirements.linux")}
+		steps={steps}
+		githubUrl="https://github.com/LouisMarotta/m7-jellyfin#readme"
+		releasesUrl="https://github.com/LouisMarotta/m7-jellyfin/releases/latest"
+	/>
+</Layout>

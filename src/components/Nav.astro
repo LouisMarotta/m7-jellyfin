@@ -1,0 +1,112 @@
+---
+import { Locale } from "@mannisto/astro-i18n/runtime";
+import jellyfinLogo from '../assets/jellyfin.png';
+
+const locale = Locale.from(Astro.url);
+
+const homePath = Locale.url(locale, "/");
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="nav">
+    <div class="nav-inner">
+        <a class="brand" href={homePath}>
+            <img class="brand-logo" src={jellyfinLogo.src} alt="M7 Jellyfin" />
+            <span class="brand-name">M7 Jellyfin</span>
+        </a>
+
+        <div class="lang-switcher">
+            {
+                Locale.supported.map((code) => (
+                    <a
+                        href={Locale.url(code, currentPath)}
+                        class:list={{ active: code === locale }}
+                        aria-label={code}
+                    >
+                        {code.toUpperCase()}
+                    </a>
+                ))
+            }
+        </div>
+    </div>
+</header>
+
+<style>
+    .nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 12px 24px;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .brand-logo {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+    }
+
+    .brand-name {
+        font-weight: 700;
+        font-size: 1.05rem;
+        letter-spacing: -0.01em;
+    }
+
+    .lang-switcher {
+        margin-left: auto;
+        display: flex;
+        gap: 4px;
+        background: #f3f4f6;
+        padding: 4px;
+        border-radius: 10px;
+    }
+
+    .lang-switcher a {
+        text-decoration: none;
+        color: #6b7280;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 6px 10px;
+        border-radius: 7px;
+        transition: background 0.15s, color 0.15s;
+    }
+
+    .lang-switcher a:hover {
+        color: #132b81;
+    }
+
+    .lang-switcher a.active {
+        background: #fff;
+        color: #132b81;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    @media (max-width: 640px) {
+        .brand-name {
+            display: none;
+        }
+        .nav-inner {
+            gap: 12px;
+            padding: 10px 16px;
+        }
+    }
+</style>
