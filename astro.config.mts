@@ -19,15 +19,23 @@ function fixRootRedirect(): AstroIntegration {
         name: "fix-root-redirect",
         hooks: {
             "astro:config:setup": ({ config }: { config: AstroConfig }) => {
-                basePath = config.base ?? "";
+                // Astro defaults `base` to "/" when unset. Normalize it so an
+                // empty base stays empty and a sub-path keeps its leading slash.
+                const raw = config.base ?? "";
+                basePath = raw === "/" || raw === "" ? "" : raw.replace(/\/$/, "");
             },
             "astro:build:done": ({ dir }: { dir: URL }) => {
                 const indexPath = new URL("index.html", dir);
                 if (!fs.existsSync(indexPath)) return;
                 let html = fs.readFileSync(indexPath, "utf-8");
                 const from = 'window.location.replace("/" + locale + "/")';
-                const to = `window.location.replace(${JSON.stringify(basePath)} + "/" + locale + "/")`;
-                if (html.includes(from)) {
+                // When base is empty, keep the original absolute redirect.
+                // When base is set (e.g. /m7-jellyfin), prefix it so the
+                // redirect stays within the deployed sub-path.
+                const to = basePath
+                    ? `window.location.replace(${JSON.stringify(basePath)} + "/" + locale + "/")`
+                    : from;
+                if (html.includes(from) && to !== from) {
                     html = html.replace(from, to);
                     fs.writeFileSync(indexPath, html);
                 }
