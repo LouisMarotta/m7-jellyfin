@@ -1,0 +1,311 @@
+---
+import { Locale } from "@mannisto/astro-i18n/runtime";
+import { ArrowLeft, ExternalLink, Download, CircleCheck } from '@lucide/astro';
+
+const locale = Locale.from(Astro.url);
+const t = Locale.t(Astro.url);
+
+const homePath = Locale.url(locale, "/");
+
+const {
+    platform,       // "ps3" | "linux" | "windows"
+    platformName,   // localized display name
+    requirements,   // localized requirements string
+    steps,          // array of localized step strings
+    githubUrl,      // URL to the GitHub README/instructions
+    releasesUrl,    // URL to the GitHub releases
+} = Astro.props;
+
+const otherPlatforms = [
+    { key: "ps3", name: t("install.ps3.name"), summary: t("install.ps3.summary"), path: Locale.url(locale, "/install/ps3") },
+    { key: "linux", name: t("install.linux.name"), summary: t("install.linux.summary"), path: Locale.url(locale, "/install/linux") },
+    { key: "windows", name: t("install.windows.name"), summary: t("install.windows.summary"), path: Locale.url(locale, "/install/windows") },
+].filter((p) => p.key !== platform);
+
+const title = t("install.title").replace("{platform}", platformName);
+const subtitle = t("install.subtitle").replace("{platform}", platformName);
+---
+
+<section class="install">
+    <a class="back" href={homePath}>
+        <ArrowLeft size={16} /> {t("install.back")}
+    </a>
+
+    <header class="install-header">
+        <h1>{title}</h1>
+        <p class="subtitle">{subtitle}</p>
+    </header>
+
+    <div class="install-grid">
+        <div class="install-main">
+            <div class="card">
+                <h2>{t("install.requirements")}</h2>
+                <p class="requirements">{requirements}</p>
+                <a class="movian-link" href="https://apps.movian.eu/#footer" target="_blank" rel="noopener">
+                    <Download size={16} /> {t("install.getMovian")}
+                </a>
+            </div>
+
+            <div class="card">
+                <h2>{t("install.steps")}</h2>
+                <ol class="steps">
+                    {
+                        steps.map((step, i) => (
+                            <li class="step">
+                                <span class="step-number">{i + 1}</span>
+                                <span class="step-text">{step}</span>
+                            </li>
+                        ))
+                    }
+                </ol>
+            </div>
+
+            <div class="actions">
+                <a class="btn btn-primary" href={releasesUrl} target="_blank" rel="noopener">
+                    <Download size={18} /> {t("install.releases")}
+                </a>
+                <a class="btn btn-secondary" href={githubUrl} target="_blank" rel="noopener">
+                    <ExternalLink size={18} /> {t("install.github")}
+                </a>
+            </div>
+        </div>
+
+        <aside class="install-side">
+            <div class="card">
+                <h2>{t("install.otherPlatforms")}</h2>
+                <div class="other-list">
+                    {
+                        otherPlatforms.map((p) => (
+                            <a class="other-item" href={p.path}>
+                                <CircleCheck size={18} />
+                                <div>
+                                    <span class="other-name">{p.name}</span>
+                                    <span class="other-summary">{p.summary}</span>
+                                </div>
+                            </a>
+                        ))
+                    }
+                </div>
+            </div>
+        </aside>
+    </div>
+</section>
+
+<style>
+    .install {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 40px 24px 0;
+    }
+
+    .back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        color: var(--color-muted);
+        font-weight: 500;
+        margin-bottom: 24px;
+        transition: color 0.15s;
+    }
+
+    .back:hover {
+        color: var(--color-primary);
+    }
+
+    .install-header {
+        margin-bottom: 32px;
+    }
+
+    .install-header h1 {
+        font-size: 2rem;
+        letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+        color: var(--color-muted);
+        margin-top: 8px;
+        font-size: 1.05rem;
+    }
+
+    .install-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 24px;
+        align-items: start;
+    }
+
+    .install-main {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .card {
+        background: var(--color-surface);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: var(--radius);
+        padding: 24px;
+    }
+
+    .card h2 {
+        font-size: 1.15rem;
+        margin-bottom: 16px;
+        color: var(--color-primary-dark);
+    }
+
+    .requirements {
+        color: var(--color-muted);
+        margin: 0;
+    }
+
+    .movian-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 16px;
+        color: var(--color-primary);
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.15s;
+    }
+
+    .movian-link:hover {
+        color: var(--color-primary-dark);
+        text-decoration: underline;
+    }
+
+    .steps {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .step {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+    }
+
+    .step-number {
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--color-primary);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+
+    .step-text {
+        color: var(--color-text);
+        line-height: 1.6;
+        padding-top: 2px;
+    }
+
+    .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-primary {
+        background: var(--color-primary);
+        color: #fff;
+        box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover {
+        background: var(--color-primary-dark);
+    }
+
+    .btn-secondary {
+        background: #fff;
+        color: var(--color-primary);
+        border: 1px solid rgba(19, 43, 129, 0.25);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(19, 43, 129, 0.06);
+    }
+
+    .install-side .card {
+        position: sticky;
+        top: 90px;
+    }
+
+    .other-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .other-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 10px;
+        text-decoration: none;
+        color: var(--color-text);
+        background: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .other-item:hover {
+        border-color: var(--color-primary);
+        box-shadow: var(--shadow);
+    }
+
+    .other-item svg {
+        color: var(--color-primary);
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .other-item div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .other-name {
+        font-weight: 600;
+    }
+
+    .other-summary {
+        color: var(--color-muted);
+        font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+        .install-grid {
+            grid-template-columns: 1fr;
+        }
+        .install-side .card {
+            position: static;
+        }
+    }
+</style>

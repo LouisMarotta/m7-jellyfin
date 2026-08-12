@@ -14,27 +14,43 @@
 
 <style>
 	.feature {
-		border: 1px solid #fff;
+		border: 1px solid rgba(255, 255, 255, 0.15);
         background-color: #fff;
         color: #000;
-		border-radius: 10px;
-		padding: 20px;
+		border-radius: 12px;
+		padding: 24px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        transition: transform 0.15s, box-shadow 0.15s;
 	}
+
+    .feature:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    }
 
     .feature-header {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 12px;
 
         margin-bottom: 16px;
     }
 
+    .feature-header .icon {
+        color: var(--color-primary);
+        display: flex;
+        align-items: center;
+    }
+
     .feature-header h3 {
         margin: 0px;
+        font-size: 1.15rem;
+        color: var(--color-primary-dark);
     }
 
     .description {
-        color: gray;
+        color: var(--color-muted);
+        line-height: 1.6;
     }
 
     .title {

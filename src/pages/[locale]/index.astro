@@ -4,7 +4,7 @@ import Hero from "../../components/Hero.astro";
 import Feature from "../../components/Feature.astro";
 import BottomHero from "../../components/BottomHero.astro";
 
-import { Gamepad2, Play, Feather, FolderGit2 } from '@lucide/astro';
+import { Gamepad2, Play, Feather, FolderGit2, Zap, Shield, ArrowRight, Monitor, Gamepad, Laptop } from '@lucide/astro';
 
 // Handle translations
 import { Locale } from "@mannisto/astro-i18n/runtime";
@@ -16,53 +16,78 @@ export const getStaticPaths = () => {
 };
 
 const t = Locale.t(Astro.url);
+const locale = Locale.from(Astro.url);
+
+const ps3Path = Locale.url(locale, "/install/ps3");
+const linuxPath = Locale.url(locale, "/install/linux");
+const windowsPath = Locale.url(locale, "/install/windows");
 ---
 
-<Layout>
+<Layout showNav={false}>
 	<Hero />
+
 	<BottomHero>
-		<div class="features-grid" style="margin-top: 60px;">
+		<div class="features-grid">
 			<Feature>
 				<span slot="icon"><Feather size={32} /></span>
-				<h3 slot="title">Lightweight</h3>
-				<span slot="description">Uses 50% less ram compared to the official Web Client</span>
+				<h3 slot="title">{t("home.features.lightweight.title")}</h3>
+				<span slot="description">{t("home.features.lightweight.desc")}</span>
 			</Feature>
 			<Feature>
 				<span slot="icon"><Play size={32} /></span>
-				<h3 slot="title">Play your media!</h3>
-				<span slot="description">Always connected!</span>
+				<h3 slot="title">{t("home.features.play.title")}</h3>
+				<span slot="description">{t("home.features.play.desc")}</span>
+			</Feature>
+			<Feature>
+				<span slot="icon"><Zap size={32} /></span>
+				<h3 slot="title">{t("home.features.fast.title")}</h3>
+				<span slot="description">{t("home.features.fast.desc")}</span>
+			</Feature>
+			<Feature>
+				<span slot="icon"><Shield size={32} /></span>
+				<h3 slot="title">{t("home.features.private.title")}</h3>
+				<span slot="description">{t("home.features.private.desc")}</span>
 			</Feature>
 			<Feature>
 				<span slot="icon"><Gamepad2 size={32} /></span>
-				<h3 slot="title">Supports your devices!</h3>
-				<span slot="description">There's no reason not to give a second life to your old consoles, Raspberry Pi's.</span>
+				<h3 slot="title">{t("home.features.devices.title")}</h3>
+				<span slot="description">{t("home.features.devices.desc")}</span>
 			</Feature>
 			<Feature>
 				<span slot="icon"><FolderGit2 size={32} /></span>
-				<h3 slot="title">Open-source!</h3>
-				<span slot="description">This project is open source, contributions are welcomed!</span>
+				<h3 slot="title">{t("home.features.opensource.title")}</h3>
+				<span slot="description">{t("home.features.opensource.desc")}</span>
 			</Feature>
 		</div>
 	</BottomHero>
-	<div style="color: white; background-color: #373737; padding: 16px 0 0 0;">
-		<h2 style="font-weight: 400; text-align: center;">Wanna get started?</h2>
 
-		<span>Check the guide for your platform!</span>
+	<section class="getstarted">
+		<h2 class="getstarted-title">{t("home.getstarted.title")}</h2>
+		<p class="getstarted-subtitle">{t("home.getstarted.subtitle")}</p>
 
 		<div class="platform-container">
-			<a>
-				PS3
+			<a class="platform-card" href={ps3Path}>
+				<div class="platform-icon"><Gamepad size={28} /></div>
+				<span class="platform-name">{t("home.getstarted.ps3")}</span>
+				<span class="platform-desc">{t("home.getstarted.ps3.desc")}</span>
+				<span class="platform-cta">{t("home.getstarted.cta")} <ArrowRight size={16} /></span>
 			</a>
 
-			<a>
-				Raspberry Pi / Linux
+			<a class="platform-card" href={linuxPath}>
+				<div class="platform-icon"><Monitor size={28} /></div>
+				<span class="platform-name">{t("home.getstarted.linux")}</span>
+				<span class="platform-desc">{t("home.getstarted.linux.desc")}</span>
+				<span class="platform-cta">{t("home.getstarted.cta")} <ArrowRight size={16} /></span>
 			</a>
 
-			<a>
-				Windows
+			<a class="platform-card" href={windowsPath}>
+				<div class="platform-icon"><Laptop size={28} /></div>
+				<span class="platform-name">{t("home.getstarted.windows")}</span>
+				<span class="platform-desc">{t("home.getstarted.windows.desc")}</span>
+				<span class="platform-cta">{t("home.getstarted.cta")} <ArrowRight size={16} /></span>
 			</a>
 		</div>
-	</div>
+	</section>
 </Layout>
 
 
@@ -70,17 +95,88 @@ const t = Locale.t(Astro.url);
 	.features-grid {
 		max-width: 1024px;
 		margin: auto;
+		padding-top: 40px;
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 		gap: 20px;
 	}
 
-	.platform-container {
+	.getstarted {
 		max-width: 1024px;
-		margin: auto;
-		display: flex;
-		gap: 20px;
+		margin: 0 auto;
+		padding: 64px 24px;
+		text-align: center;
+	}
 
-		align-content: center;
+	.getstarted-title {
+		font-size: 2rem;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		color: var(--color-primary-dark);
+	}
+
+	.getstarted-subtitle {
+		color: var(--color-muted);
+		margin: 8px 0 40px;
+		font-size: 1.05rem;
+	}
+
+	.platform-container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		gap: 20px;
+	}
+
+	.platform-card {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 8px;
+		padding: 28px;
+		background: var(--color-surface);
+		border: 1px solid rgba(0, 0, 0, 0.06);
+		border-radius: var(--radius);
+		text-decoration: none;
+		color: var(--color-text);
+		text-align: left;
+		transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+	}
+
+	.platform-card:hover {
+		transform: translateY(-4px);
+		box-shadow: var(--shadow);
+		border-color: var(--color-primary);
+	}
+
+	.platform-icon {
+		width: 52px;
+		height: 52px;
+		border-radius: 12px;
+		background: var(--color-primary);
+		color: #fff;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 8px;
+	}
+
+	.platform-name {
+		font-size: 1.2rem;
+		font-weight: 700;
+	}
+
+	.platform-desc {
+		color: var(--color-muted);
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	.platform-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		margin-top: 8px;
+		color: var(--color-primary);
+		font-weight: 600;
 	}
 </style>

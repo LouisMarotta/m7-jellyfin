@@ -1,9 +1,13 @@
 ---
 import "normalize.css";
 import { Locale } from "@mannisto/astro-i18n/runtime"
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
 
 const locale = Locale.from(Astro.url)
 const t = Locale.t(Astro.url)
+
+const { title, showNav = true } = Astro.props;
 ---
 <!doctype html>
 <html lang={locale}>
@@ -13,27 +17,61 @@ const t = Locale.t(Astro.url)
 		document.cookie = `locale=${locale}; path=/; SameSite=Lax; Max-Age=31536000`
 		</script>
 
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>M7 Jellyfin</title>
+		<meta name="description" content={t("footer.tagline")} />
+		<title>{title ? `${title} · M7 Jellyfin` : "M7 Jellyfin"}</title>
 	</head>
 	<body>
-		<slot />
+		{showNav && <Nav />}
+		<main class="page">
+			<slot />
+		</main>
+		<Footer />
 	</body>
 </html>
 
 <style is:global>
-	html,
-	body {
-		font-family: 'Inter', sans-serif;
-		margin: 0;
-		width: 100%;
-		height: 100%;
+	:root {
+		--color-primary: #132b81;
+		--color-primary-dark: #0d1b3d;
+		--color-accent: #3b82f6;
+		--color-text: #1f2937;
+		--color-muted: #6b7280;
+		--color-bg: #ffffff;
+		--color-surface: #f8fafc;
+		--radius: 12px;
+		--shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 	}
 
-	h1,h2,h3,h4,h5,h6 {
-		margin: 0px;
+	html,
+	body {
+		font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+		margin: 0;
+		width: 100%;
+		min-height: 100%;
+		color: var(--color-text);
+		background: var(--color-bg);
+		-webkit-font-smoothing: antialiased;
+		text-rendering: optimizeLegibility;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		margin: 0;
+		line-height: 1.2;
+	}
+
+	p {
+		line-height: 1.6;
+	}
+
+	a {
+		color: var(--color-primary);
+	}
+
+	.page {
+		min-height: calc(100vh - 200px);
 	}
 </style>

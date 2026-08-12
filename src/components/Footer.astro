@@ -1,0 +1,41 @@
+---
+import { Locale } from "@mannisto/astro-i18n/runtime";
+
+const t = Locale.t(Astro.url);
+---
+
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <span class="footer-title">M7 Jellyfin</span>
+            <p class="footer-tagline">{t("footer.tagline")}</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .footer {
+        background: #0d1b3d;
+        color: #cbd5e1;
+        margin-top: 60px;
+    }
+
+    .footer-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 48px 24px 32px;
+    }
+
+    .footer-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #fff;
+    }
+
+    .footer-tagline {
+        margin: 8px 0 0;
+        color: #94a3b8;
+        max-width: 320px;
+        line-height: 1.5;
+    }
+</style>

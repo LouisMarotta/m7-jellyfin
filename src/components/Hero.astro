@@ -1,18 +1,21 @@
 ---
 import jellyfinLogo from '../assets/jellyfin.png';
 import githubBadge from '../assets/badge_github.png';
+import { Locale } from "@mannisto/astro-i18n/runtime";
+
+const t = Locale.t(Astro.url);
 ---
 
 <div class="hero-container">
     <div class="hero-card">
-        <img class="logo" src={jellyfinLogo.src} />
-        <h1>Jellyfin for Movian</h1>
+        <img class="logo" src={jellyfinLogo.src} alt="M7 Jellyfin" />
+        <h1>{t("home.hero.title")}</h1>
 
-        <p class="tagline">Watch Jellyfin on your PS3, Raspberry Pi, and more...</p>
+        <p class="tagline">{t("home.hero.tagline")}</p>
 
         <div class="hero-buttons">
-            <a href="https://github.com/LouisMarotta/m7-jellyfin/releases/latest" target="_blank">
-                <img class="action" src={githubBadge.src} height="80px"></img>
+            <a href="https://github.com/LouisMarotta/m7-jellyfin/releases/latest" target="_blank" rel="noopener">
+                <img class="action" src={githubBadge.src} height="80px" alt={t("home.hero.download")} />
             </a>
         </div>
     </div>
@@ -39,7 +42,7 @@ import githubBadge from '../assets/badge_github.png';
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     padding: 24px;
-
+    max-width: 560px;
 }
 
 @media (min-width: 768px) {
@@ -53,6 +56,7 @@ import githubBadge from '../assets/badge_github.png';
         transform: translate(-50%, -50%);
         top: 45%;
         left: 50%;
+        width: 100%;
     }
 }
 
@@ -64,14 +68,27 @@ import githubBadge from '../assets/badge_github.png';
 
 .hero-card h1 {
     text-align: center;
+    font-size: 1.8rem;
+    letter-spacing: -0.02em;
+    color: var(--color-primary-dark);
 }
 
 .hero-card .tagline {
     color: #4b5563;
+    text-align: center;
+    margin: 8px 0 20px;
 }
 
 .hero-buttons {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+}
+
+.hero-buttons .action {
+    transition: transform 0.15s;
+}
+
+.hero-buttons .action:hover {
+    transform: scale(1.03);
 }
 </style>

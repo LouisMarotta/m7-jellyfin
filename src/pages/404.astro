@@ -1,2 +1,61 @@
 ---
+import Layout from "../layouts/Layout.astro";
+import { Locale } from "@mannisto/astro-i18n/runtime";
+import { House } from '@lucide/astro';
+
+const locale = Locale.from(Astro.url);
+const homePath = Locale.url(locale, "/");
 ---
+
+<Layout>
+	<section class="notfound">
+		<h1 class="code">404</h1>
+		<p class="message">Page not found</p>
+		<a class="btn" href={homePath}>
+			<House size={18} /> Back to home
+		</a>
+	</section>
+</Layout>
+
+<style>
+	.notfound {
+		max-width: 600px;
+		margin: 0 auto;
+		padding: 120px 24px;
+		text-align: center;
+	}
+
+	.code {
+		font-size: 6rem;
+		font-weight: 800;
+		letter-spacing: -0.03em;
+		background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	.message {
+		color: var(--color-muted);
+		font-size: 1.2rem;
+		margin: 8px 0 32px;
+	}
+
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 12px 24px;
+		background: var(--color-primary);
+		color: #fff;
+		border-radius: 10px;
+		text-decoration: none;
+		font-weight: 600;
+		transition: background 0.15s, transform 0.15s;
+	}
+
+	.btn:hover {
+		background: var(--color-primary-dark);
+		transform: translateY(-2px);
+	}
+</style>
