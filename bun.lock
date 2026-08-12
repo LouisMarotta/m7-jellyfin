@@ -6,7 +6,7 @@
       "dependencies": {
         "@astrojs/sitemap": "^3.7.2",
         "@lucide/astro": "^1.8.0",
-        "@mannisto/astro-i18n": "^1.0.2",
+        "@mannisto/astro-i18n": "1.1.1",
         "astro": "^6.1.6",
         "normalize.css": "^8.0.1",
       },
@@ -147,7 +147,7 @@
 
     "@lucide/astro": ["@lucide/astro@1.8.0", "", { "peerDependencies": { "astro": "^4 || ^5 || ^6" } }, "sha512-ZrzTu1L8b2XEA/hfCB0ZqTCQN3BXjvomuSaTHJzIBDFggOUTyzw55/klEo6tDFSl54d0KQTvcI1qJ7RgAVuCyg=="],
 
-    "@mannisto/astro-i18n": ["@mannisto/astro-i18n@1.0.2", "", { "peerDependencies": { "astro": "^5.0.0 || ^6.0.0" } }, "sha512-EvAf4gvz4tH2AbFohF6eOrRFaE6v6MA4GqsFsC2EaZiJ5sk4j6Dwe+Xj6ArXUQFtk+/4Od93J1HPt+MNk5iHEQ=="],
+    "@mannisto/astro-i18n": ["@mannisto/astro-i18n@1.1.1", "", { "peerDependencies": { "astro": "^5.0.0 || ^6.0.0" } }, "sha512-ls9Zou0sxcNs1zbnv1gUGNdCP3dHmrxz9/0MAwI7/C++1IfvDMvyvejDhlaxo4oOgeemFfT6ZibK3kQkqVL6Og=="],
 
     "@oslojs/encoding": ["@oslojs/encoding@1.1.0", "", {}, "sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ=="],
 

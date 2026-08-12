@@ -14,7 +14,7 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
     "@lucide/astro": "^1.8.0",
-    "@mannisto/astro-i18n": "^1.0.2",
+    "@mannisto/astro-i18n": "1.1.1",
     "astro": "^6.1.6",
     "normalize.css": "^8.0.1"
   }
