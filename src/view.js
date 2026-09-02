@@ -142,7 +142,7 @@ class View {
     page.appendItem('', 'separator', { title: this.trans.l('home.livetv') });
     page.appendItem(`${this.prefix}:livetv`, 'directory', {
       title: this.trans.l('home.livetv'),
-      icon: Plugin.path + 'assets/logo.png'
+      icon: Plugin.path + 'assets/icons/livetv.png'
     });
 
     page.appendItem('', 'separator', '');

@@ -395,7 +395,7 @@ class Api {
         icon = this.getItemImage(item.Id, 'Primary', {
           fillHeight: 177,
           fillWidth: 315,
-          quality: 96,
+          quality: 90,
           format: 'Jpg'
         });
         break;
@@ -404,16 +404,19 @@ class Api {
         icon = this.getItemImage(item.Id, 'Primary', {
           fillHeight: 175,
           fillWidth: 175,
-          quality: 100,
+          quality: 90,
           format: 'Jpg'
         });
+        break;
+      case 'TvChannel':
+        icon = this.getItemImage(item.Id, 'Primary', {});
         break;
       case 'Movie':
       default:
         icon = this.getItemImage(item.Id, 'Thumb', {
           fillHeight: 177,
           fillWidth: 315,
-          quality: 96,
+          quality: 90,
           format: 'Jpg'
         });
         break;
