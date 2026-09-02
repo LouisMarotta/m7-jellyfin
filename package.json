@@ -1,6 +1,6 @@
 {
   "name": "movian7-jellyfin",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Stream your TV Shows and Movies from your <a href=\"https://jellyfin.org/\">Jellyfin</a> instance.",
   "keywords": [
     "swc",
