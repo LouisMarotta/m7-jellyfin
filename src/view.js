@@ -22,6 +22,10 @@ class View {
         view: this.showFavourites
       },
       {
+        path: `livetv`,
+        view: this.showLiveTv
+      },
+      {
         path: `search:(.*)`,
         view: this.showSearch
       },
@@ -134,6 +138,13 @@ class View {
       icon: Plugin.path + 'assets/icons/favourites.png'
     });
 
+    // Live TV
+    page.appendItem('', 'separator', { title: this.trans.l('home.livetv') });
+    page.appendItem(`${this.prefix}:livetv`, 'directory', {
+      title: this.trans.l('home.livetv'),
+      icon: Plugin.path + 'assets/icons/livetv.png'
+    });
+
     page.appendItem('', 'separator', '');
     page.loading = false;
   }
@@ -162,6 +173,49 @@ class View {
     page.haveMore(false);
     page.loading = false;
     page.metadata.title = this.trans.l('home.favourites');
+  }
+
+  showLiveTv = (page) => {
+    this.setPageHeader(page, this.trans.l('home.livetv'));
+
+    page.model.contents = 'grid';
+    page.contents = 'list';
+    page.metadata.title = this.trans.l('home.livetv');
+
+    var offset = 0;
+    var limit = 50;
+    var hasMore = true;
+
+    function browse() {
+      if (!hasMore) return;
+
+      setTimeout(() => {
+        var data = this.api.getLiveTvChannels(offset, limit, this.sort_by, this.sort_order);
+
+        let items = data.Items ?? [];
+        items.forEach((item) => {
+          let mediaItem = this.api.parseItem(item);
+          let { path, type } = this.getMediaPath(item);
+          page.appendItem(path, type, mediaItem);
+        });
+
+        offset += items.length;
+        let totalEntries = data.TotalRecordCount;
+        hasMore = offset < totalEntries;
+        page.entries = totalEntries;
+        page.haveMore(hasMore);
+        page.loading = false;
+      }, 125);
+    }
+
+    this.setSorting(page, () => {
+      offset = 0;
+      hasMore = true;
+      browse.bind(this)();
+    });
+
+    page.asyncPaginator = browse.bind(this);
+    browse.bind(this)();
   }
 
   showSearch = (page, query) => {
@@ -458,8 +512,8 @@ class View {
       no_fs_scan: true,
       subtitles: subtitles,
     }
-    if (typeof media.ProviderIds.Imdb !== 'undefined') {
-      videoParams.imdbid = media.ProviderIds.Imbd;
+    if (typeof media.ProviderIds !== 'undefined' && typeof media.ProviderIds.Imdb !== 'undefined') {
+      videoParams.imdbid = media.ProviderIds.Imdb;
     }
 
     var source = 'videoparams:' + JSON.stringify(videoParams);
