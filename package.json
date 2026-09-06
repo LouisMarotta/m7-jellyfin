@@ -27,7 +27,7 @@
     "eslint": "^8.56.0",
     "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
-    "archiver": "^7.0.1"
+    "archiver": "^8.0.0"
   },
   "movian": {
     "title": "Jellyfin",
