@@ -10,10 +10,10 @@ importers:
     devDependencies:
       '@swc-node/register':
         specifier: ^1.8.0
-        version: 1.11.1(@swc/core@1.15.10)(@swc/types@0.1.25)(typescript@5.9.3)
+        version: 1.11.1(@swc/core@1.15.10)(@swc/types@0.1.25)(supports-color@7.2.0)(typescript@5.9.3)
       '@swc/cli':
         specifier: ^0.7.10
-        version: 0.7.10(@swc/core@1.15.10)
+        version: 0.7.10(@swc/core@1.15.10)(supports-color@7.2.0)
       '@swc/core':
         specifier: ^1.15.10
         version: 1.15.10
@@ -22,10 +22,10 @@ importers:
         version: 7.0.1
       eslint:
         specifier: ^8.56.0
-        version: 8.57.1
+        version: 8.57.1(supports-color@7.2.0)
       prettier:
         specifier: ^3.2.5
-        version: 3.8.1
+        version: 3.9.6
       rimraf:
         specifier: ^5.0.5
         version: 5.0.10
@@ -1067,8 +1067,8 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier@3.8.1:
-    resolution: {integrity: sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==}
+  prettier@3.9.6:
+    resolution: {integrity: sha512-OpN0zzVdiaiAhxpuuj5efpIS4sY9j7bY6uR5mnj5yPzGkdkjNKSJeUThPb60Jw29QuAZgA4o+/iB49kFiaBX6g==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -1333,17 +1333,17 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
-  '@eslint-community/eslint-utils@4.9.1(eslint@8.57.1)':
+  '@eslint-community/eslint-utils@4.9.1(eslint@8.57.1(supports-color@7.2.0))':
     dependencies:
-      eslint: 8.57.1
+      eslint: 8.57.1(supports-color@7.2.0)
       eslint-visitor-keys: 3.4.3
 
   '@eslint-community/regexpp@4.12.2': {}
 
-  '@eslint/eslintrc@2.1.4':
+  '@eslint/eslintrc@2.1.4(supports-color@7.2.0)':
     dependencies:
       ajv: 6.12.6
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       espree: 9.6.1
       globals: 13.24.0
       ignore: 5.3.2
@@ -1356,10 +1356,10 @@ snapshots:
 
   '@eslint/js@8.57.1': {}
 
-  '@humanwhocodes/config-array@0.13.0':
+  '@humanwhocodes/config-array@0.13.0(supports-color@7.2.0)':
     dependencies:
       '@humanwhocodes/object-schema': 2.0.3
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -1540,13 +1540,13 @@ snapshots:
       '@swc/core': 1.15.10
       '@swc/types': 0.1.25
 
-  '@swc-node/register@1.11.1(@swc/core@1.15.10)(@swc/types@0.1.25)(typescript@5.9.3)':
+  '@swc-node/register@1.11.1(@swc/core@1.15.10)(@swc/types@0.1.25)(supports-color@7.2.0)(typescript@5.9.3)':
     dependencies:
       '@swc-node/core': 1.14.1(@swc/core@1.15.10)(@swc/types@0.1.25)
       '@swc-node/sourcemap-support': 0.6.1
       '@swc/core': 1.15.10
       colorette: 2.0.20
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       oxc-resolver: 11.16.4
       pirates: 4.0.7
       tslib: 2.8.1
@@ -1560,11 +1560,11 @@ snapshots:
       source-map-support: 0.5.21
       tslib: 2.8.1
 
-  '@swc/cli@0.7.10(@swc/core@1.15.10)':
+  '@swc/cli@0.7.10(@swc/core@1.15.10)(supports-color@7.2.0)':
     dependencies:
       '@swc/core': 1.15.10
       '@swc/counter': 0.1.3
-      '@xhmikosr/bin-wrapper': 13.2.0
+      '@xhmikosr/bin-wrapper': 13.2.0(supports-color@7.2.0)
       commander: 8.3.0
       minimatch: 9.0.5
       piscina: 4.9.2
@@ -1633,9 +1633,9 @@ snapshots:
     dependencies:
       defer-to-connect: 2.0.1
 
-  '@tokenizer/inflate@0.2.7':
+  '@tokenizer/inflate@0.2.7(supports-color@7.2.0)':
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       fflate: 0.8.2
       token-types: 6.1.2
     transitivePeerDependencies:
@@ -1652,9 +1652,9 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@xhmikosr/archive-type@7.1.0':
+  '@xhmikosr/archive-type@7.1.0(supports-color@7.2.0)':
     dependencies:
-      file-type: 20.5.0
+      file-type: 20.5.0(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -1663,10 +1663,10 @@ snapshots:
       execa: 5.1.1
       isexe: 2.0.0
 
-  '@xhmikosr/bin-wrapper@13.2.0':
+  '@xhmikosr/bin-wrapper@13.2.0(supports-color@7.2.0)':
     dependencies:
       '@xhmikosr/bin-check': 7.1.0
-      '@xhmikosr/downloader': 15.2.0
+      '@xhmikosr/downloader': 15.2.0(supports-color@7.2.0)
       '@xhmikosr/os-filter-obj': 3.0.0
       bin-version-check: 5.1.0
     transitivePeerDependencies:
@@ -1674,9 +1674,9 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@xhmikosr/decompress-tar@8.1.0':
+  '@xhmikosr/decompress-tar@8.1.0(supports-color@7.2.0)':
     dependencies:
-      file-type: 20.5.0
+      file-type: 20.5.0(supports-color@7.2.0)
       is-stream: 2.0.1
       tar-stream: 3.1.7
     transitivePeerDependencies:
@@ -1684,10 +1684,10 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@xhmikosr/decompress-tarbz2@8.1.0':
+  '@xhmikosr/decompress-tarbz2@8.1.0(supports-color@7.2.0)':
     dependencies:
-      '@xhmikosr/decompress-tar': 8.1.0
-      file-type: 20.5.0
+      '@xhmikosr/decompress-tar': 8.1.0(supports-color@7.2.0)
+      file-type: 20.5.0(supports-color@7.2.0)
       is-stream: 2.0.1
       seek-bzip: 2.0.0
       unbzip2-stream: 1.4.3
@@ -1696,30 +1696,30 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@xhmikosr/decompress-targz@8.1.0':
+  '@xhmikosr/decompress-targz@8.1.0(supports-color@7.2.0)':
     dependencies:
-      '@xhmikosr/decompress-tar': 8.1.0
-      file-type: 20.5.0
+      '@xhmikosr/decompress-tar': 8.1.0(supports-color@7.2.0)
+      file-type: 20.5.0(supports-color@7.2.0)
       is-stream: 2.0.1
     transitivePeerDependencies:
       - bare-abort-controller
       - react-native-b4a
       - supports-color
 
-  '@xhmikosr/decompress-unzip@7.1.0':
+  '@xhmikosr/decompress-unzip@7.1.0(supports-color@7.2.0)':
     dependencies:
-      file-type: 20.5.0
+      file-type: 20.5.0(supports-color@7.2.0)
       get-stream: 6.0.1
       yauzl: 3.2.0
     transitivePeerDependencies:
       - supports-color
 
-  '@xhmikosr/decompress@10.2.0':
+  '@xhmikosr/decompress@10.2.0(supports-color@7.2.0)':
     dependencies:
-      '@xhmikosr/decompress-tar': 8.1.0
-      '@xhmikosr/decompress-tarbz2': 8.1.0
-      '@xhmikosr/decompress-targz': 8.1.0
-      '@xhmikosr/decompress-unzip': 7.1.0
+      '@xhmikosr/decompress-tar': 8.1.0(supports-color@7.2.0)
+      '@xhmikosr/decompress-tarbz2': 8.1.0(supports-color@7.2.0)
+      '@xhmikosr/decompress-targz': 8.1.0(supports-color@7.2.0)
+      '@xhmikosr/decompress-unzip': 7.1.0(supports-color@7.2.0)
       graceful-fs: 4.2.11
       strip-dirs: 3.0.0
     transitivePeerDependencies:
@@ -1727,14 +1727,14 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@xhmikosr/downloader@15.2.0':
+  '@xhmikosr/downloader@15.2.0(supports-color@7.2.0)':
     dependencies:
-      '@xhmikosr/archive-type': 7.1.0
-      '@xhmikosr/decompress': 10.2.0
+      '@xhmikosr/archive-type': 7.1.0(supports-color@7.2.0)
+      '@xhmikosr/decompress': 10.2.0(supports-color@7.2.0)
       content-disposition: 0.5.4
       defaults: 2.0.2
       ext-name: 5.0.0
-      file-type: 20.5.0
+      file-type: 20.5.0(supports-color@7.2.0)
       filenamify: 6.0.0
       get-stream: 6.0.1
       got: 13.0.0
@@ -1907,9 +1907,11 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  debug@4.4.3:
+  debug@4.4.3(supports-color@7.2.0):
     dependencies:
       ms: 2.1.3
+    optionalDependencies:
+      supports-color: 7.2.0
 
   decompress-response@6.0.0:
     dependencies:
@@ -1940,20 +1942,20 @@ snapshots:
 
   eslint-visitor-keys@3.4.3: {}
 
-  eslint@8.57.1:
+  eslint@8.57.1(supports-color@7.2.0):
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.1(eslint@8.57.1)
+      '@eslint-community/eslint-utils': 4.9.1(eslint@8.57.1(supports-color@7.2.0))
       '@eslint-community/regexpp': 4.12.2
-      '@eslint/eslintrc': 2.1.4
+      '@eslint/eslintrc': 2.1.4(supports-color@7.2.0)
       '@eslint/js': 8.57.1
-      '@humanwhocodes/config-array': 0.13.0
+      '@humanwhocodes/config-array': 0.13.0(supports-color@7.2.0)
       '@humanwhocodes/module-importer': 1.0.1
       '@nodelib/fs.walk': 1.2.8
       '@ungap/structured-clone': 1.3.0
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.6
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.2
@@ -2054,9 +2056,9 @@ snapshots:
     dependencies:
       flat-cache: 3.2.0
 
-  file-type@20.5.0:
+  file-type@20.5.0(supports-color@7.2.0):
     dependencies:
-      '@tokenizer/inflate': 0.2.7
+      '@tokenizer/inflate': 0.2.7(supports-color@7.2.0)
       strtok3: 10.3.4
       token-types: 6.1.2
       uint8array-extras: 1.5.0
@@ -2350,7 +2352,7 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier@3.8.1: {}
+  prettier@3.9.6: {}
 
   process-nextick-args@2.0.1: {}
 
