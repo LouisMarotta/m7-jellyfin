@@ -26,7 +26,7 @@
     "@swc-node/register": "^1.8.0",
     "eslint": "^8.56.0",
     "prettier": "^3.2.5",
-    "rimraf": "^5.0.5",
+    "rimraf": "^6.0.0",
     "archiver": "^7.0.1"
   },
   "movian": {
