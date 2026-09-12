@@ -478,9 +478,12 @@ class View {
         var streams = source.MediaStreams ?? [];
         streams.forEach((stream, j) => {
           if (stream.Type === 'Subtitle') {
+            let subtitleParams = utils.paramsToString({
+              ApiKey: service.access_token
+            });
             subtitles.push({
               title: stream.DisplayTitle || stream.Title,
-              url: `${this.api.host}/Videos/${id}/${source.Id}/Subtitles/${j}/Stream.${service.subtitle_format || 'srt'}`,
+              url: `${this.api.host}/Videos/${id}/${source.Id}/Subtitles/${j}/Stream.${service.subtitle_format || 'srt'}?${subtitleParams}`,
               language: stream.Language,
               source: defaultSubtitleSource,
             });
@@ -494,7 +497,7 @@ class View {
 
     var url = `${this.api.host}/Videos/${id}/master.m3u8`;
     var params = {
-      api_key: service.access_token,
+      ApiKey: service.access_token,
       static: false,
       VideoCodec: ['h264'].join(','),
       // VideoCodec: 'av1,h264,vp9',
