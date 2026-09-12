@@ -442,14 +442,17 @@ class Api {
       Container: 'opus,webm|opus,ts|mp3,mp3,aac,m4a|aac,m4b|aac,flac,webma,webm|webma,wav,ogg',
       TranscodingContainer: 'mp4',
       TranscodingProtocol: 'hls',
-      ApiKey: service.access_token,
       AudioCodec: 'aac',
       EnableRedirection: true,
       EnableRemoteMedia: false,
       EnableAudioVbrEncoding: true
     }
     params = utils.paramsToString(params);
-    return `${this.host}/Audio/${id}/universal?${params}`;
+    // Send the access token as a request header (stripped by Movian's HTTP
+    // client before the request is made) instead of a URL query parameter,
+    // so it isn't captured in server access logs, proxy logs or Referer
+    // headers.
+    return `${this.host}/Audio/${id}/universal?${params}|X-Emby-Token=${encodeURIComponent(service.access_token)}`;
   }
 
   getMediaPath = function (item, context = {}) {
