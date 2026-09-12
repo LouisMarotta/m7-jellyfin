@@ -2,6 +2,7 @@ var http = require('movian/http');
 var plugin = JSON.parse(Plugin.manifest);
 var service = require('movian/service');
 const Utils = require('./utils');
+const Auth = require('./auth');
 const utils = new Utils();
 
 class Api {
@@ -25,6 +26,7 @@ class Api {
 
   constructor(user = {}) {
     this.user = user;
+    this.auth = new Auth(() => this.host);
   }
 
   setUser = function (user) {
@@ -42,49 +44,6 @@ class Api {
     return url;
   }
 
-  getHeaders = function (authorization = false) {
-    var deviceId = Core.deviceId;
-    var header = `MediaBrowser Client="Movian", Device="${utils.getDevice()}", DeviceId="${deviceId}", Version="${plugin.version}"`;
-    if (authorization) {
-      header += `, Token="${service.access_token}"`;
-    }
-
-    return header;
-  }
-
-  getDefaultHeaders = function () {
-    return {
-      'Content-Type': 'application/json',
-      'Authorization': this.getHeaders(true),
-      'X-Emby-Token': service.access_token
-    }
-  }
-
-  authenticate = function () {
-    try {
-      var url = `${this.host}/Users/AuthenticateByName`;
-      var response = http.request(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Emby-Authorization': this.getHeaders()
-        },
-        postdata: JSON.stringify({
-          Username: service.username,
-          Pw: service.password
-        })
-      });
-    } catch (e) {
-      console.log(e);
-    }
-
-    if (response.statuscode && response.statuscode == 200) {
-      response = JSON.parse(response);
-    }
-
-    return response;
-  }
-
   getLibraries = function () {
     let params = {
       IncludeItemTypes: 'Movie',
@@ -97,7 +56,7 @@ class Api {
     // try {
     var response = http.request(url, {
       method: 'GET',
-      headers: this.getDefaultHeaders()
+      headers: this.auth.getDefaultHeaders()
     });
     // } catch (e) {
     //     console.log(e);
@@ -116,7 +75,7 @@ class Api {
     // try {
     var response = http.request(url, {
       method: 'GET',
-      headers: this.getDefaultHeaders()
+      headers: this.auth.getDefaultHeaders()
     });
     // } catch (e) {
     //     console.log(e);
@@ -176,7 +135,7 @@ class Api {
 
     var response = http.request(url, {
       method: 'GET',
-      headers: this.getDefaultHeaders()
+      headers: this.auth.getDefaultHeaders()
     });
 
     if (response.statuscode && response.statuscode == 200) {
@@ -220,7 +179,7 @@ class Api {
 
     var response = http.request(url, {
       method: 'GET',
-      headers: this.getDefaultHeaders()
+      headers: this.auth.getDefaultHeaders()
     });
 
     if (response.statuscode && response.statuscode == 200) {
@@ -239,7 +198,7 @@ class Api {
     var url = `${this.host}/Shows/${id}/Seasons?${utils.paramsToString(params)}`;
     var response = http.request(url, {
       method: 'GET',
-      headers: this.getDefaultHeaders()
+      headers: this.auth.getDefaultHeaders()
     });
 
     if (response.statuscode && response.statuscode == 200) {
@@ -259,7 +218,7 @@ class Api {
     var url = `${this.host}/Shows/${series}/Episodes?${utils.paramsToString(params)}`;
     var response = http.request(url, {
       method: 'GET',
-      headers: this.getDefaultHeaders()
+      headers: this.auth.getDefaultHeaders()
     });
 
     if (response.statuscode && response.statuscode == 200) {
@@ -279,7 +238,7 @@ class Api {
     var url = `${this.host}/Users/${this.user.Id}/Items?${utils.paramsToString(params)}`;
     var response = http.request(url, {
       method: 'GET',
-      headers: this.getDefaultHeaders()
+      headers: this.auth.getDefaultHeaders()
     });
 
     if (response.statuscode && response.statuscode == 200) {
@@ -317,7 +276,7 @@ class Api {
     var url = `${this.host}/Users/${this.user.Id}/Items/${id}?Fields=MediaStreams`;
     var response = http.request(url, {
       method: 'GET',
-      headers: this.getDefaultHeaders()
+      headers: this.auth.getDefaultHeaders()
     });
 
     if (response.statuscode && response.statuscode == 200) {
@@ -331,7 +290,7 @@ class Api {
     var url = `${this.host}/Items/${id}/PlaybackInfo`;
     var response = http.request(url, {
       method: 'GET',
-      headers: this.getDefaultHeaders()
+      headers: this.auth.getDefaultHeaders()
     });
 
     if (response.statuscode && response.statuscode == 200) {
@@ -360,7 +319,7 @@ class Api {
     var url = `${this.host}/LiveTv/Channels?${params}`;
     var response = http.request(url, {
       method: 'GET',
-      headers: this.getDefaultHeaders()
+      headers: this.auth.getDefaultHeaders()
     });
 
     if (response.statuscode && response.statuscode == 200) {

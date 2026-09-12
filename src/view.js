@@ -97,20 +97,55 @@ class View {
     page.contents = 'home';
     page.type = 'home';
 
-    if (!service.host || !service.username || !service.password) {
+    if (!service.host) {
       page.metadata.name = this.trans.l('auth.missing_credentials.title');
       page.error(this.trans.l('auth.missing_credentials', { provider_name: "Jellyfin" }));
       return;
     }
 
+    // Reuse a stored token; only log in again if it is missing or rejected.
     if (!service.access_token) {
-      var authentication = this.api.authenticate();
-      if (typeof authentication.User !== 'undefined') {
-        this.user = authentication.User;
+      service.access_token = this.api.auth.loadToken();
+    }
+
+    if (service.access_token) {
+      var validation = this.api.auth.validateToken(service.access_token);
+
+      if (validation.valid) {
+        this.user = validation.user;
+        this.api.setUser(this.user);
+      } else {
+        service.access_token = '';
+        this.api.auth.clearToken();
+      }
+    }
+
+    if (!service.access_token) {
+      if (!service.username || !service.password) {
+        page.metadata.name = this.trans.l('auth.missing_credentials.title');
+        page.error(this.trans.l('auth.missing_credentials', { provider_name: "Jellyfin" }));
+        page.loading = false;
+        return;
+      }
+
+      var authentication = this.api.auth.authenticate();
+
+      if (!authentication.success) {
+        page.metadata.name = this.trans.l('auth.failed.title');
+        page.error(this.trans.l(authentication.error, {
+          provider_name: 'Jellyfin',
+          statuscode: authentication.statuscode ?? 0
+        }));
+        page.loading = false;
+        return;
+      }
+
+      if (typeof authentication.user !== 'undefined') {
+        this.user = authentication.user;
         this.api.setUser(this.user);
       }
-      if (typeof authentication.AccessToken !== 'undefined') {
-        service.access_token = authentication.AccessToken;
+      if (typeof authentication.accessToken !== 'undefined') {
+        service.access_token = authentication.accessToken;
       }
     }
 
