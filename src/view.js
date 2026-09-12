@@ -188,7 +188,7 @@ class View {
     this.setPageHeader(page, this.trans.l('plugin.loading'));
 
     let extraParams = {
-      "Filters": 'isFavourite',
+      "Filters": 'IsFavorite',
       "IncludeItemTypes": ['Movie', 'Series'].join(',')
     }
 
