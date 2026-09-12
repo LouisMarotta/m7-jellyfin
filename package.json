@@ -21,7 +21,7 @@
     "lint": "eslint ./src"
   },
   "devDependencies": {
-    "@swc/cli": "^0.7.10",
+    "@swc/cli": "^0.8.0",
     "@swc/core": "^1.15.10",
     "@swc-node/register": "^1.8.0",
     "eslint": "^8.56.0",
