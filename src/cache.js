@@ -39,6 +39,10 @@ class Cache {
     this.db.query("DELETE FROM cache WHERE timestamp < ?", cutoff);
     console.log("Cleaned up old cache entries");
   }
+
+  clear = function () {
+    this.db.query("DELETE FROM cache");
+  }
 }
 
 module.exports = Cache;

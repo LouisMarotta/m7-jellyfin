@@ -1,11 +1,14 @@
 var settings = require('movian/settings');
 var popup = require('movian/popup');
+var nativePopup = require('native/popup');
 var service = require('movian/service');
 
 const prop = require('movian/prop');
 const Navigator = require('./navigator');
 const Utils = require('./utils');
 const Api = require('./api');
+const Auth = require('./auth');
+const Cache = require('./cache');
 
 class Settings {
   constructor(plugin) {
@@ -104,6 +107,28 @@ class Settings {
 
     settings.createAction('credits', this.trans.l('action.credits'), () => {
       this.navigator.openUrl(`${this.prefix}:credits`);
+    });
+
+    settings.createDivider(this.trans.l('setting.maintenance'));
+
+    settings.createAction('clear_cache', this.trans.l('action.clear_cache'), () => {
+      new Cache().clear();
+      popup.notify(this.trans.l('action.clear_cache.done'), 3);
+    });
+
+    settings.createAction('clear_data', this.trans.l('action.clear_data'), () => {
+      let confirmed = nativePopup.message(this.trans.l('action.clear_data.confirm'), true, true);
+
+      if (!confirmed) {
+        return;
+      }
+
+      new Auth().clearAll();
+      new Cache().clear();
+      service.username = '';
+      service.password = '';
+      service.access_token = '';
+      popup.notify(this.trans.l('action.clear_data.done'), 3);
     });
 
   }
